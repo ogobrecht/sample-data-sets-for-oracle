@@ -8,15 +8,19 @@ The data models from Oracle were normally created for a dedicated schema. As I n
 
 All table scripts are created with the simplest possible options for easy readability - no fancy constraint names. Constraints will be renamed with a helper script after the table creation.
 
-You can install a singe data models with the provided scripts in the subdirectory of the model. You will find always three scripts to handle this - here the example script calls for the customer orders model (co):
+## Installation
+
+Because of the use of identity columns you need at least Oracle Database 12.1.0.2 or higher.
+
+You can install a singe data model with the provided scripts in the subdirectory of the model. You will find always three scripts to handle this - here the example script calls for the customer orders model (co):
 
 - `@co/_install.sql`
 - `@co/_refresh_data.sql`
 - `@co/_uninstall.sql`
 
-If you want to install more or all models in one go then you can use the script in the project root called `_install_all.sql`. Please edit this script before you start it to select what you want.
+If you want to install/uninstall more or all models in one go then you can use the scripts in the project root called `_install_all.sql` and `_uninstall_all.sql`. Please edit the scripts before you start to select what you want.
 
-Here the list of data models which I want to provide in a first iterations:
+Here the list of data models which I want to provide in the first iterations:
 
 - [ ] [Customer Orders][co], created by Oracle (the newest sample schema so far)
 - [ ] [Human Resources][hr], created by Oracle
