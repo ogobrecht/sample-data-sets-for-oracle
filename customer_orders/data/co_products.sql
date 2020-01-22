@@ -1,5 +1,5 @@
-prompt --inserting into co_products
-set define off;
+prompt - products
+set define off
 
 declare
   prod_details varchar2(32767);

@@ -1,4 +1,4 @@
-prompt --view co_product_orders
+prompt - view co_product_orders
 
 create or replace view co_product_orders as
   select

@@ -8,7 +8,7 @@ prompt ============================================================
 @create_objects.sql
 @load_data.sql
 prompt ============================================================
-prompt Done :-)
+prompt Done
 prompt
 
 spool off

@@ -1,4 +1,4 @@
-prompt --view co_store_orders
+prompt - view co_store_orders
 
 create or replace view co_store_orders as
   select

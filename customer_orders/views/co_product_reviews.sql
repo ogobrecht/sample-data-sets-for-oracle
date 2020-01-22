@@ -1,4 +1,4 @@
-prompt --view co_product_reviews
+prompt - view co_product_reviews
 
 create or replace view co_product_reviews as
   select

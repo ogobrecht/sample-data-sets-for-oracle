@@ -1,4 +1,4 @@
-prompt --table co_order_items
+prompt - table co_order_items
 
 create table co_order_items (
   order_id     integer references co_orders,

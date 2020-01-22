@@ -1,4 +1,4 @@
-prompt --inserting into co_stores
+prompt - stores
 set define off
 
 begin

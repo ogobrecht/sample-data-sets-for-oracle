@@ -1,5 +1,5 @@
-prompt --inserting into co_order_items
-set define off;
+prompt - order items
+set define off
 
 begin
   insert into co_order_items (order_id,line_item_id,product_id,unit_price,quantity) values (1,1,33,37,4);

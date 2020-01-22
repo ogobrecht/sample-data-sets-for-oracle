@@ -6,7 +6,7 @@ prompt LOAD DATA
 @data/co_orders.sql
 @data/co_order_items.sql
 
-prompt --commit work
+prompt - commit work
 commit;
 
 @reset_identity_columns.sql

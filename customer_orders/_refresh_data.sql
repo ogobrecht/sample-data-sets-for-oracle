@@ -8,7 +8,7 @@ prompt ============================================================
 @remove_data.sql
 @load_data.sql
 prompt ============================================================
-prompt Done :-)
+prompt Done
 prompt
 
 spool off

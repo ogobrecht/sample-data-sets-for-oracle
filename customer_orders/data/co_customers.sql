@@ -1,4 +1,4 @@
-prompt --inserting into co_customers
+prompt - customers
 set define off
 
 begin
