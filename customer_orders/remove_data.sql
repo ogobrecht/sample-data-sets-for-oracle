@@ -1,16 +1,16 @@
 prompt REMOVE DATA
 
-prompt - co_order_items
+prompt - order items
 truncate table co_order_items;
 
-prompt - co_orders
+prompt - orders
 delete co_orders;
 
-prompt - co_stores
+prompt - stores
 delete co_stores;
 
-prompt - co_customers
+prompt - customers
 delete co_customers;
 
-prompt - co_products
+prompt - products
 delete co_products;

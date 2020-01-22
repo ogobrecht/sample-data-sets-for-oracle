@@ -1,14 +1,13 @@
 set define on verify off
 prompt - manage constraint names with prefix "&1"
 variable prefix varchar2(10)
-BEGIN
+begin
   :prefix := '&1';
-END;
+end;
 /
 set define off
 
-BEGIN
-  FOR i IN (
+begin for i in (
 ------------------------------------------------------------
 with base as (
   select
@@ -84,16 +83,15 @@ order by
   new_constraint_name,
   constraint_name
 ------------------------------------------------------------
-            ) LOOP
-    EXECUTE IMMEDIATE REPLACE(REPLACE(REPLACE(q'[
-      ALTER TABLE #TABLE_NAME# RENAME CONSTRAINT #CONSTRAINT_NAME# TO #NEW_CONSTRAINT_NAME#
-    ]',
-                                              '#TABLE_NAME#',
-                                              i.table_name),
-                                      '#CONSTRAINT_NAME#',
-                                      i.constraint_name),
-                              '#NEW_CONSTRAINT_NAME#',
-                              i.new_constraint_name);
-  END LOOP;
-END;
+) loop
+    execute immediate 
+      replace(replace(replace('alter table #TABLE_NAME# rename constraint #CONSTRAINT_NAME# to #NEW_CONSTRAINT_NAME#',
+                              '#TABLE_NAME#',
+                              i.table_name),
+                      '#CONSTRAINT_NAME#',
+                      i.constraint_name),
+              '#NEW_CONSTRAINT_NAME#',
+              i.new_constraint_name);
+  end loop;
+end;
 /
