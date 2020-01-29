@@ -9,34 +9,35 @@ create table co_products (
   image_mime_type    varchar2(512 char),
   image_filename     varchar2(512 char),
   image_charset      varchar2(512 char),
-  image_last_updated date);
+  image_last_updated date
+);
 
-comment on table co_products
-  is 'Details of goods that customers can purchase';
+comment on table co_products is
+  'Details of goods that customers can purchase';
 
-comment on column co_products.product_id 
-  is 'Auto-incrementing primary key';
-  
-comment on column co_products.product_name 
-  is 'What a product is called';
+comment on column co_products.product_id is
+  'Auto-incrementing primary key';
 
-comment on column co_products.unit_price 
-  is 'The monetary value of one item of this product';
-  
-comment on column co_products.product_details 
-  is 'Further details of the product stored in JSON format';
-  
-comment on column co_products.product_image 
-  is 'A picture of the product';
-  
-comment on column co_products.image_mime_type 
-  is 'The mime-type of the product image';
-  
-comment on column co_products.image_filename 
-  is 'The name of the file loaded in the image column';
-  
-comment on column co_products.image_charset 
-  is 'The character set used to encode the image';
+comment on column co_products.product_name is
+  'What a product is called';
 
-comment on column co_products.image_last_updated 
-  is 'The date the image was last changed';
+comment on column co_products.unit_price is
+  'The monetary value of one item of this product';
+
+comment on column co_products.product_details is
+  'Further details of the product stored in JSON format';
+
+comment on column co_products.product_image is
+  'A picture of the product';
+
+comment on column co_products.image_mime_type is
+  'The mime-type of the product image';
+
+comment on column co_products.image_filename is
+  'The name of the file loaded in the image column';
+
+comment on column co_products.image_charset is
+  'The character set used to encode the image';
+
+comment on column co_products.image_last_updated is
+  'The date the image was last changed';

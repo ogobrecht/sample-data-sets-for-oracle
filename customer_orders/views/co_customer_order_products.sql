@@ -11,10 +11,10 @@ create or replace view co_customer_order_products as
     sum(oi.quantity * oi.unit_price) order_total,
     listagg(p.product_name, ', ' on overflow truncate '...' with count) within group(order by oi.line_item_id) items
   from
-         co_orders o
+         co_orders      o
     join co_order_items oi on o.order_id    = oi.order_id
-    join co_customers c    on o.customer_id = c.customer_id
-    join co_products p     on oi.product_id = p.product_id
+    join co_customers   c  on o.customer_id = c.customer_id
+    join co_products    p  on oi.product_id = p.product_id
   group by
     o.order_id,
     o.order_datetime,

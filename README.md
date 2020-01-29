@@ -30,6 +30,13 @@ Here the list of data models which I want to provide in the first iterations:
 - [ ] [Customer Orders][co], created by Oracle (the newest sample schema so far)
 - [ ] [Human Resources][hr], created by Oracle
 
+Open Todos:
+
+- [x] Script to automatically manage constraint names
+- [ ] Script to automatically create missing fk indexes
+- [ ] Script to automatically manage index names
+
+
 Hope this helps someone else...
 
 Happy data modeling and testing  
