@@ -1,16 +1,24 @@
 prompt REMOVE DATA
 
-prompt - order items
-truncate table co_order_items;
+@../_global_scripts/disable_all_foreign_key_constraints.sql hr
 
-prompt - orders
-delete co_orders;
+prompt - truncate table hr_countries
+truncate table hr_countries;
 
-prompt - stores
-delete co_stores;
+prompt - truncate table hr_departments
+truncate table hr_departments;
 
-prompt - customers
-delete co_customers;
+prompt - truncate table hr_employees
+truncate table hr_employees;
 
-prompt - products
-delete co_products;
+prompt - truncate table hr_job_history
+truncate table hr_job_history;
+
+prompt - truncate table hr_jobs
+truncate table hr_jobs;
+
+prompt - truncate table hr_locations
+truncate table hr_locations;
+
+prompt - truncate table hr_regions
+truncate table hr_regions;

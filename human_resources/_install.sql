@@ -1,6 +1,6 @@
 set define off feedback off
 whenever sqlerror exit sql.sqlcode rollback
-spool install.log
+spool _logs/install.log
 
 prompt
 prompt Install sample data model "human resources"

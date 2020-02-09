@@ -1,16 +1,18 @@
 prompt REMOVE DATA
 
-prompt - order items
+@../_global_scripts/disable_all_foreign_key_constraints.sql co
+
+prompt - truncate table co_customers
+truncate table co_customers;
+
+prompt - truncate table co_order_items
 truncate table co_order_items;
 
-prompt - orders
-delete co_orders;
+prompt - truncate table co_orders
+truncate table co_orders;
 
-prompt - stores
-delete co_stores;
+prompt - truncate table co_products
+truncate table co_products;
 
-prompt - customers
-delete co_customers;
-
-prompt - products
-delete co_products;
+prompt - truncate table co_stores
+truncate table co_stores;

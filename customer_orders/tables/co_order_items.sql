@@ -1,11 +1,12 @@
 prompt - table co_order_items
 
 create table co_order_items (
-  order_id     integer references co_orders,
-  line_item_id integer,
-  product_id   integer not null references co_products,
+  order_id     integer      ,
+  line_item_id integer      ,
+  product_id   integer      not null,
   unit_price   number(10,2) not null,
-  quantity     integer not null,
+  quantity     integer      not null,
+  --
   primary key  (order_id, line_item_id),
   unique       (product_id, order_id)
 );

@@ -1,6 +1,6 @@
 set define off feedback off
 whenever sqlerror continue
-spool uninstall.log
+spool _logs/uninstall.log
 
 prompt
 prompt Uninstall sample data model "customer orders"

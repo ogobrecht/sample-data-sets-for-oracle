@@ -1,4 +1,4 @@
-prompt - stores
+prompt - insert into co_stores
 set define off
 
 begin

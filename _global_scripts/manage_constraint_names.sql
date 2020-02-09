@@ -1,5 +1,5 @@
 set define on verify off
-prompt - manage constraint names with prefix "&1"
+prompt - manage constraint names for tables prefixed with "&1"
 variable prefix varchar2(10)
 begin
   :prefix := '&1';
@@ -27,7 +27,7 @@ with base as (
   from
          user_constraints  uc
     join user_cons_columns ucc on  uc.constraint_name = ucc.constraint_name
-    join user_tab_columns  utc on  ucc.table_name     = utc.table_name 
+    join user_tab_columns  utc on  ucc.table_name     = utc.table_name
                                and ucc.column_name    = utc.column_name
   where
     uc.table_name like upper(:prefix) || '\_%' escape '\'
@@ -42,7 +42,7 @@ with base as (
 , constraints as (
   select
     table_name,
-    table_name || '_' || constraint_type || '_' 
+    table_name || '_' || constraint_type || '_'
     || listagg('C' || column_id, '_') within group(order by column_id)
     as new_constraint_name,
     constraint_name
@@ -58,10 +58,10 @@ select
   new_constraint_name ||
     -- Append underscore if previous one has the same name.
     case
-      when lead(new_constraint_name, 1) over(order by new_constraint_name, constraint_name) = new_constraint_name 
+      when lead(new_constraint_name, 1) over(order by new_constraint_name, constraint_name) = new_constraint_name
       then '_'
     end ||
-    -- Append underscore if previous previous one has the same name. 
+    -- Append underscore if previous previous one has the same name.
     case
       when lead(new_constraint_name, 2) over(order by new_constraint_name, constraint_name) = new_constraint_name
       then '_'
@@ -84,7 +84,7 @@ order by
   constraint_name
 ------------------------------------------------------------
 ) loop
-    execute immediate 
+    execute immediate
       replace(replace(replace('alter table #TABLE_NAME# rename constraint #CONSTRAINT_NAME# to #NEW_CONSTRAINT_NAME#',
                               '#TABLE_NAME#',
                               i.table_name),

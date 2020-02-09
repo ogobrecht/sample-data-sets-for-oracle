@@ -1,11 +1,11 @@
 prompt - table hr_job_history
 
 create table hr_job_history (
-  employee_id   number(6)    not null references employees,
+  employee_id   number(6)    not null,
   start_date    date         not null,
   end_date      date         not null,
-  job_id        varchar2(10) not null references jobs,
-  department_id number(4)    references departments,
+  job_id        varchar2(10) not null,
+  department_id number(4)    ,
   --
   primary key (employee_id, start_date),
   check       (end_date > start_date)

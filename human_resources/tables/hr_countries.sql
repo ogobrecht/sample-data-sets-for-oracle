@@ -1,10 +1,12 @@
 prompt - table hr_countries
 
 create table hr_countries (
-  country_id   char(2) not null primary key,
-  country_name varchar2(40),
-  region_id    integer references regions
-) organization index; 
+  country_id   char(2)      not null,
+  country_name varchar2(40) ,
+  region_id    integer      ,
+  --
+  primary key (country_id)
+) organization index;
 
 comment on table hr_countries is
   'Country table. Contains 25 rows. References with locations table.';

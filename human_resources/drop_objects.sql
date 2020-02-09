@@ -7,7 +7,7 @@ prompt - procedure hr_secure_dml
 drop procedure hr_secure_dml;
 
 prompt - view hr_emp_details_view.sql
-drop view hr_emp_details_view.sql;
+drop view hr_emp_details_view;
 
 prompt - table hr_regions
 drop table hr_regions cascade constraints;

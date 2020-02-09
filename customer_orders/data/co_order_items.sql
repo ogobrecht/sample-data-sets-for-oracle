@@ -1,4 +1,4 @@
-prompt - order items
+prompt - insert into co_order_items
 set define off
 
 begin
