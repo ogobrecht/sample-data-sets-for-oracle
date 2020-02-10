@@ -1,4 +1,4 @@
-# Sample Data Models for Oracle
+# Sample Data Sets for Oracle
 
 A collection of common data sets reworked for identity columns and easy installation/deinstallation for testing purposes.
 
@@ -26,7 +26,7 @@ Check the resulting objects:
 
 ## Roadmap
 
-The list of data models:
+The list of data sets:
 
 - [x] [EMP & DEPT][ed] (original script), Copyright (c) Oracle (see header of original script)
 - [x] [Human Resources][hr], [Copyright (c) Oracle][ora]
