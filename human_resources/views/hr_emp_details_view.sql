@@ -19,10 +19,10 @@ create or replace view hr_emp_details_view as
     c.country_name,
     r.region_name
   from
-         hr_employees    e
-    join hr_departments  d on e.department_id = d.department_id
-    join hr_jobs         j on e.job_id        = j.job_id
-    join hr_locations    l on d.location_id   = l.location_id
-    join hr_countries    c on l.country_id    = c.country_id
-    join hr_regions      r on c.region_id     = r.region_id
+         hr_employees   e
+    join hr_departments d on e.department_id = d.department_id
+    join hr_jobs        j on e.job_id        = j.job_id
+    join hr_locations   l on d.location_id   = l.location_id
+    join hr_countries   c on l.country_id    = c.country_id
+    join hr_regions     r on c.region_id     = r.region_id
 with read only;

@@ -15,6 +15,7 @@ prompt CREATE OBJECTS
 @views/co_customer_order_products.sql
 @views/co_product_orders.sql
 @views/co_product_reviews.sql
+@views/co_store_orders_status.sql
 @views/co_store_orders.sql
 
 @../_global_scripts/manage_constraint_names.sql co

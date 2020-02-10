@@ -26,26 +26,26 @@ create or replace view co_customer_order_products as
 comment on table co_customer_order_products
   is 'A summary of who placed each order and what they bought';
 
-comment on column co_customer_order_products.order_id 
+comment on column co_customer_order_products.order_id
   is 'The primary key of the order';
 
-comment on column co_customer_order_products.order_datetime 
+comment on column co_customer_order_products.order_datetime
   is 'The date and time the order was placed';
 
-comment on column co_customer_order_products.order_status 
+comment on column co_customer_order_products.order_status
   is 'The current state of this order';
 
-comment on column co_customer_order_products.customer_id 
+comment on column co_customer_order_products.customer_id
   is 'The primary key of the customer';
 
-comment on column co_customer_order_products.email_address 
+comment on column co_customer_order_products.email_address
   is 'The email address the person uses to access the account';
 
-comment on column co_customer_order_products.full_name 
+comment on column co_customer_order_products.full_name
   is 'What this customer is called';
 
-comment on column co_customer_order_products.order_total 
+comment on column co_customer_order_products.order_total
   is 'The total amount the customer paid for the order';
 
-comment on column co_customer_order_products.items 
+comment on column co_customer_order_products.items
   is 'A comma-separated list naming the products in this order';
