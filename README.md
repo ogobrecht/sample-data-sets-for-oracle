@@ -24,14 +24,14 @@ Check the resulting objects:
 - `select * from user_objects where generated = 'N' order by object_type, object_name;`
 - `select * from user_constraints order by table_name, constraint_name;`
 
-## Roadmap
+## Roadmap, Copyrights
 
 The list of data sets:
 
-- [x] [EMP & DEPT][ed] (original script), Copyright (c) Oracle (see header of original script)
-- [x] [Human Resources][hr], [Copyright (c) Oracle][ora]
-- [x] [Customer Orders][co], [Copyright (c) Oracle][ora]
-- [ ] [movies][m], (c)
+- [x] EMP & DEPT ([source][ed], original script), Copyright Oracle ([license][oradn])
+- [x] Human Resources ([source][hr]), Copyright Oracle ([license][ora])
+- [x] Customer Orders ([source][co]), Copyright Oracle ([license][ora])
+- [ ] movies ([source][m]), Copyright xxx ([license][xxx])
 
 For more info about the Oracle sample schemas see the [docs][oradoc].
 
@@ -53,4 +53,5 @@ Ottmar
 [hr]: https://github.com/oracle/db-sample-schemas/tree/master/human_resources
 [m]: ???
 [ora]: https://github.com/oracle/db-sample-schemas/blob/master/LICENSE.md
+[oradn]: https://github.com/oracle/dotnet-db-samples/blob/master/LICENSE
 [oradoc]: https://docs.oracle.com/database/121/COMSC/overview.htm#COMSC002
