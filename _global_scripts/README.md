@@ -6,13 +6,13 @@ There are some global helper scripts existing in this repository to avoid repeat
 
 Example: `disable_all_foreign_key_constraints.sql hr`
 
-Disables all foreign key constraints related to the tables of the hr model (parameter translates to `table_name like 'HR_%'`).
+Disables all foreign key constraints related to the tables of the hr model (parameter translates to `table_name like 'oehr_%'`).
 
 ## Enable All Foreign Key Constraints
 
 Example: `enable_all_foreign_key_constraints.sql hr`
 
-Enables all foreign key constraints related to the tables of the hr model (parameter translates to `table_name like 'HR_%'`).
+Enables all foreign key constraints related to the tables of the hr model (parameter translates to `table_name like 'oehr_%'`).
 
 ## Manage Constraint Names
 

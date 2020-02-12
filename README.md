@@ -29,7 +29,7 @@ Check the resulting objects:
 The list of data sets:
 
 - [x] EMP & DEPT ([source][ed], original script), Copyright Oracle ([license][oradn])
-- [x] Human Resources ([source][hr]), Copyright Oracle ([license][ora])
+- [x] Order Entry & Human Resources ([source oe][oe], [source hr][hr]), Copyright Oracle ([license][ora])
 - [x] Customer Orders ([source][co]), Copyright Oracle ([license][ora])
 - [ ] movies ([source][m]), Copyright xxx ([license][xxx])
 
