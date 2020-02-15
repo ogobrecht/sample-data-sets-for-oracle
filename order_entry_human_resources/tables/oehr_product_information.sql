@@ -1,18 +1,24 @@
 prompt - table oehr_product_information
 
 create table oehr_product_information (
-  product_id number(6),
-  product_name varchar2(50 char),
-  product_description varchar2(2000 char),
-  category_id number(2),
-  weight_class number(1),
-  warranty_period interval year (2) to month,
-  supplier_id number(6),
-  product_status varchar2(20 char),
-  list_price number(8,2),
-  min_price number(8,2),
-  catalog_url varchar2(50 char)
+  product_id          integer                   ,
+  product_name        varchar2(50 char)         ,
+  product_description varchar2(2000 char)       ,
+  category_id         number(2)                 ,
+  weight_class        number(1)                 ,
+  warranty_period     interval year(2) to month ,
+  supplier_id         number(6)                 ,
+  product_status      varchar2(20 char)         ,
+  list_price          number(8,2)               ,
+  min_price           number(8,2)               ,
+  catalog_url         varchar2(50 char)         ,
+  --
+  primary key (product_id),
+  check (product_status in ('orderable', 'planned', 'under development', 'obsolete'))
 ) ;
+
+comment on table oehr_product_information is
+  'non-industry-specific data in various categories.';
 
 comment on column oehr_product_information.product_id is
   'primary key column.';
@@ -34,5 +40,3 @@ comment on column oehr_product_information.supplier_id is
 
 comment on column oehr_product_information.product_status is
   'check constraint. appropriate for complex rules, such as all products in status production must have at least one inventory entry. also appropriate for a trigger auditing status change.';
-
-comment on table oehr_product_information  is 'non-industry-specific data in various categories.';

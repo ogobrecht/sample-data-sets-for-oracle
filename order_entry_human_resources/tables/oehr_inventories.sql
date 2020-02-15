@@ -1,8 +1,8 @@
 prompt - table oehr_inventories
 
 create table oehr_inventories (
-  product_id       number(6) ,
-  warehouse_id     number(3) not null,
+  product_id       integer   ,
+  warehouse_id     integer   not null,
   quantity_on_hand number(8) not null,
   --
   primary key (product_id, warehouse_id)

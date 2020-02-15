@@ -1,11 +1,11 @@
 prompt - table oehr_job_history
 
 create table oehr_job_history (
-  employee_id   number(6)    not null,
+  employee_id   integer      not null,
   start_date    date         not null,
   end_date      date         not null,
   job_id        varchar2(10) not null,
-  department_id number(4)    ,
+  department_id integer      ,
   --
   primary key (employee_id, start_date),
   check       (end_date >= start_date)
