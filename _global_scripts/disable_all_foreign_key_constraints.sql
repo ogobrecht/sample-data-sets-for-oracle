@@ -16,7 +16,8 @@ select
 from
   user_constraints
 where
-  table_name like upper(:prefix) || '\_%' escape '\'
+  --without prefix we will find all user tables
+  table_name like case when :prefix is not null then :prefix || '\_%' else '%' end escape '\'
   and constraint_type = 'R'
   and status = 'ENABLED'
 ------------------------------------------------------------

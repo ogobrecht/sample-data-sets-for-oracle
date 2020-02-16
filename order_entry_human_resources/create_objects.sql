@@ -55,4 +55,5 @@ alter table oehr_warehouses           modify location_id    references oehr_loca
 
 @views/oehr_emp_details_view.sql
 
-@../_global_scripts/manage_constraint_names.sql hr
+@../_global_scripts/create_missing_fk_indexes.sql OEHR
+@../_global_scripts/manage_constraint_names.sql OEHR

@@ -1,6 +1,6 @@
 prompt LOAD DATA
 
-@../_global_scripts/disable_all_foreign_key_constraints.sql hr
+@../_global_scripts/disable_all_foreign_key_constraints.sql OEHR
 
 @data\oehr_countries.sql
 @data\oehr_customers.sql
@@ -21,6 +21,6 @@ prompt LOAD DATA
 prompt - commit work
 commit;
 
-@../_global_scripts/enable_all_foreign_key_constraints.sql hr
+@../_global_scripts/enable_all_foreign_key_constraints.sql OEHR
 
 @reset_identity_columns.sql

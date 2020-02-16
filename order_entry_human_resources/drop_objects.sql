@@ -1,6 +1,6 @@
 prompt DROP OBJECTS
 
-@../_global_scripts/disable_all_foreign_key_constraints.sql hr
+@../_global_scripts/disable_all_foreign_key_constraints.sql OEHR
 
 prompt - view oehr_emp_details_view
 drop view oehr_emp_details_view;

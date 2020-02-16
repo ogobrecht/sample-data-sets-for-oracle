@@ -8,7 +8,7 @@ end;
 set define off
 
 begin for i in (
-------------------------------------------------------------
+--------------------------------------------------------------------------------
 with base as (
   select
     uc.table_name,
@@ -30,7 +30,8 @@ with base as (
     join user_tab_columns  utc on  ucc.table_name     = utc.table_name
                                and ucc.column_name    = utc.column_name
   where
-    uc.table_name like upper(:prefix) || '\_%' escape '\'
+    --without prefix we will find all user tables
+    uc.table_name like case when :prefix is not null then :prefix || '\_%' else '%' end escape '\'
   group by
     uc.table_name,
     uc.constraint_name,
@@ -42,8 +43,9 @@ with base as (
 , constraints as (
   select
     table_name,
-    table_name || '_' || constraint_type || '_'
-    || listagg('C' || column_id, '_') within group(order by column_id)
+    table_name || '_'
+      || listagg('C' || column_id, '_') within group(order by column_id)
+      || '_' || constraint_type
     as new_constraint_name,
     constraint_name
   from
@@ -69,7 +71,7 @@ select
     -- Append underscore if previous previous previous one has the same name.
     -- We will stop here: Please check your constraints if you encounter more than three times the same resulting name ;-)
     case
-      when lag(new_constraint_name, 3) over(order by new_constraint_name, constraint_name) = new_constraint_name
+      when lead(new_constraint_name, 3) over(order by new_constraint_name, constraint_name) = new_constraint_name
       then '_'
     end
   as new_constraint_name,
@@ -82,7 +84,7 @@ order by
   table_name,
   new_constraint_name,
   constraint_name
-------------------------------------------------------------
+--------------------------------------------------------------------------------
 ) loop
     execute immediate
       replace(replace(replace('alter table #TABLE_NAME# rename constraint #CONSTRAINT_NAME# to #NEW_CONSTRAINT_NAME#',
