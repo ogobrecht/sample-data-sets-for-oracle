@@ -18,16 +18,16 @@ prompt CREATE OBJECTS
 
 prompt - indexes
 rem foreign key indexes are created automatically with a script
-create index oehr_temp_name_ix_01 on oehr_customers            (cust_email);
-create index oehr_temp_name_ix_02 on oehr_customers            (cust_last_name);
-create index oehr_temp_name_ix_03 on oehr_customers            (upper(cust_last_name), upper(cust_first_name));
-create index oehr_temp_name_ix_04 on oehr_employees            (last_name, first_name);
-create index oehr_temp_name_ix_05 on oehr_inventories          (warehouse_id, product_id);
-create index oehr_temp_name_ix_06 on oehr_locations            (city);
-create index oehr_temp_name_ix_07 on oehr_locations            (state_province);
-create index oehr_temp_name_ix_08 on oehr_orders               (order_date);
-create index oehr_temp_name_ix_09 on oehr_product_descriptions (translated_name);
-create index oehr_temp_name_ix_10 on oehr_product_information  (supplier_id);
+create index oehr_temp_name_01_ix on oehr_customers            (cust_email);
+create index oehr_temp_name_02_ix on oehr_customers            (cust_last_name);
+create index oehr_temp_name_03_ix on oehr_customers            (upper(cust_last_name), upper(cust_first_name));
+create index oehr_temp_name_04_ix on oehr_employees            (last_name, first_name);
+create index oehr_temp_name_05_ix on oehr_inventories          (warehouse_id, product_id);
+create index oehr_temp_name_06_ix on oehr_locations            (city);
+create index oehr_temp_name_07_ix on oehr_locations            (state_province);
+create index oehr_temp_name_08_ix on oehr_orders               (order_date);
+create index oehr_temp_name_09_ix on oehr_product_descriptions (translated_name);
+create index oehr_temp_name_10_ix on oehr_product_information  (supplier_id);
 
 prompt - referential constraints
 alter table oehr_countries            modify region_id      references oehr_regions;

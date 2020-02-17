@@ -39,8 +39,8 @@ with base as (
     utc.column_name,
     utc.column_id,
     uc.search_condition_vc
-) --select * from base
-, constraints as (
+  ),
+constraints as (
   select
     table_name,
     table_name || '_'
@@ -54,7 +54,7 @@ with base as (
     table_name,
     constraint_name,
     constraint_type
-) --select * from constraints
+)
 select
   table_name,
   new_constraint_name ||
