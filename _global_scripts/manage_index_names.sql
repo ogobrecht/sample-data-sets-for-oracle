@@ -9,18 +9,36 @@ set define off
 
 begin for i in (
 --------------------------------------------------------------------------------
-with indexes_ as (
-  select 
+with 
+function get_column_expression (
+  p_index_name       varchar2,
+  p_column_position  integer
+) return varchar2 is
+  v_return varchar2(4000 char);
+begin
+  for i in (select column_expression 
+              from sys.user_ind_expressions
+             where index_name = p_index_name
+               and column_position = p_column_position) loop
+    v_return := substr(i.column_expression, 1, 4000);
+  end loop;
+  return v_return;
+end;
+indexes_base as (
+  select
     ui.table_name,
-    ui.index_name, 
+    ui.index_name,
     listagg(uic.column_name, ',') within group(order by uic.column_position) as column_list,
-    listagg('C' || utc.column_id, '_') within group(order by utc.column_id) as column_ids,
+    listagg('C' || utc.column_id, '_') within group(order by uic.column_position) as column_ids,
     case when ui.uniqueness = 'UNIQUE' then 'UK' end as uniqueness
   from
-    sys.user_indexes               ui
-    join sys.user_ind_columns      uic on ui.index_name   = uic.index_name
-    left join sys.user_tab_columns utc on ui.table_name   = utc.table_name 
-                                      and uic.column_name = utc.column_name
+    sys.user_indexes                   ui
+    join sys.user_ind_columns          uic on ui.table_name = uic.table_name and ui.index_name = uic.index_name
+    left join sys.user_ind_expressions uie on uic.index_name = uie.index_name and uic.column_position = uie.column_position
+    left join sys.user_tab_columns     utc on ui.table_name = utc.table_name 
+                                           and ( uic.column_name = utc.column_name
+                                                 or 
+                                                 instr(get_column_expression(uic.index_name,uic.column_position), utc.column_name) > 0 )
   where ui.table_name not like 'BIN$%'
     and ui.table_name like case when :prefix is not null then :prefix || '\_%' else '%' end escape '\'
   group by
@@ -29,7 +47,7 @@ with indexes_ as (
     ui.uniqueness
   --order by index_name, column_list
 ),
-constraints_ as (
+constraints_pk_fk as (
   select
     uc.constraint_name,
     uc.table_name,
@@ -48,8 +66,8 @@ constraints_ as (
     uc.constraint_name
   --order by uc.table_name, column_list
 ),
-results as (
-  select 
+indexes_ as (
+  select
     i.table_name,
     i.index_name,
     i.table_name || '_' || i.column_ids
@@ -60,49 +78,51 @@ results as (
     i.uniqueness,
     c.constraint_name,
     c.constraint_type
-  from indexes_            i
-    left join constraints_ c on i.table_name  = c.table_name
-                            and i.column_list = c.column_list
-)
+  from indexes_base             i
+    left join constraints_pk_fk c on  i.table_name  = c.table_name
+                                  and i.column_list = c.column_list
+),
+indexes_distinct as (
 select
   table_name,
-  new_constraint_name ||
+  index_name,
+  new_index_name ||
     -- Append underscore if previous one has the same name.
     case
-      when lead(new_constraint_name, 1) over(order by new_constraint_name, constraint_name) = new_constraint_name
+      when lead(new_index_name, 1) over(order by new_index_name, index_name) = new_index_name
       then '_'
     end ||
     -- Append underscore if previous previous one has the same name.
     case
-      when lead(new_constraint_name, 2) over(order by new_constraint_name, constraint_name) = new_constraint_name
+      when lead(new_index_name, 2) over(order by new_index_name, index_name) = new_index_name
       then '_'
     end ||
     -- Append underscore if previous previous previous one has the same name.
     -- We will stop here: Please check your constraints if you encounter more than three times the same resulting name ;-)
     case
-      when lead(new_constraint_name, 3) over(order by new_constraint_name, constraint_name) = new_constraint_name
+      when lead(new_index_name, 3) over(order by new_index_name, index_name) = new_index_name
       then '_'
     end
-  as new_constraint_name,
-  constraint_name
+  as new_index_name
 from
-  results
+  indexes_
 where
-  new_constraint_name != constraint_name
+  new_index_name != index_name
+)
+select
+  table_name,
+  index_name,
+  new_index_name,
+  'alter index ' || index_name || ' rename to ' || new_index_name as ddl
+from
+  indexes_distinct
 order by
   table_name,
-  new_constraint_name,
-  constraint_name
+  new_index_name,
+  index_name
 --------------------------------------------------------------------------------
 ) loop
-    execute immediate
-      replace(replace(replace('alter table #TABLE_NAME# rename constraint #CONSTRAINT_NAME# to #NEW_CONSTRAINT_NAME#',
-                              '#TABLE_NAME#',
-                              i.table_name),
-                      '#CONSTRAINT_NAME#',
-                      i.constraint_name),
-              '#NEW_CONSTRAINT_NAME#',
-              i.new_constraint_name);
+    execute immediate i.ddl;
   end loop;
 end;
 /

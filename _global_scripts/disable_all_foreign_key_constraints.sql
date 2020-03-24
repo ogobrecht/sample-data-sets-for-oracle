@@ -8,11 +8,12 @@ end;
 set define off
 
 begin for i in (
-------------------------------------------------------------
+--------------------------------------------------------------------------------
 select
   table_name,
   constraint_name,
-  status
+  status,
+  'alter table ' || table_name || ' disable constraint ' || constraint_name as ddl
 from
   user_constraints
 where
@@ -20,14 +21,9 @@ where
   table_name like case when :prefix is not null then :prefix || '\_%' else '%' end escape '\'
   and constraint_type = 'R'
   and status = 'ENABLED'
-------------------------------------------------------------
+--------------------------------------------------------------------------------
 ) loop
-    execute immediate
-      replace(replace('alter table #TABLE_NAME# disable constraint #CONSTRAINT_NAME#',
-                      '#TABLE_NAME#',
-                      i.table_name),
-              '#CONSTRAINT_NAME#',
-              i.constraint_name);
+    execute immediate i.ddl;
   end loop;
 end;
 /

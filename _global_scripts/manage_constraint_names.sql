@@ -9,7 +9,7 @@ set define off
 
 begin for i in (
 --------------------------------------------------------------------------------
-with base as (
+with constraints_base as (
   select
     uc.table_name,
     uc.constraint_name,
@@ -39,24 +39,26 @@ with base as (
     utc.column_name,
     utc.column_id,
     uc.search_condition_vc
-  ),
+),
 constraints as (
   select
     table_name,
+    constraint_name,
     table_name || '_'
       || listagg('C' || column_id, '_') within group(order by column_id)
       || '_' || constraint_type
-    as new_constraint_name,
-    constraint_name
+    as new_constraint_name
   from
-    base
+    constraints_base
   group by
     table_name,
     constraint_name,
     constraint_type
-)
+),
+constraints_distinct as (
 select
   table_name,
+  constraint_name,
   new_constraint_name ||
     -- Append underscore if previous one has the same name.
     case
@@ -74,26 +76,26 @@ select
       when lead(new_constraint_name, 3) over(order by new_constraint_name, constraint_name) = new_constraint_name
       then '_'
     end
-  as new_constraint_name,
-  constraint_name
+  as new_constraint_name
 from
   constraints
 where
   new_constraint_name != constraint_name
+)
+select
+  table_name,
+  constraint_name,
+  new_constraint_name,
+  'alter table ' || table_name || ' rename constraint ' || constraint_name || ' to ' || new_constraint_name as ddl
+from
+  constraints_distinct
 order by
   table_name,
   new_constraint_name,
   constraint_name
 --------------------------------------------------------------------------------
 ) loop
-    execute immediate
-      replace(replace(replace('alter table #TABLE_NAME# rename constraint #CONSTRAINT_NAME# to #NEW_CONSTRAINT_NAME#',
-                              '#TABLE_NAME#',
-                              i.table_name),
-                      '#CONSTRAINT_NAME#',
-                      i.constraint_name),
-              '#NEW_CONSTRAINT_NAME#',
-              i.new_constraint_name);
+    execute immediate i.ddl;
   end loop;
 end;
 /

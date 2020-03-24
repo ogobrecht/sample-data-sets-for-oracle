@@ -42,7 +42,7 @@ select
 from
   needed_indexes             n
   left join existing_indexes e on n.table_name = e.table_name
-    and instr(e.column_list, n.column_list) = 1
+                               and instr(e.column_list, n.column_list) = 1
 where e.column_list is null
 --------------------------------------------------------------------------------
 ) loop
