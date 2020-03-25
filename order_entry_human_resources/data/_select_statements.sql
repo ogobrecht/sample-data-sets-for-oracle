@@ -1,4 +1,4 @@
--- the used select statements to produce the insert statements
+-- the used select statements to produce the insert statements (with SQL Developer)
 select /*insert*/ * from oehr_countries order by country_id;
 select /*insert*/ * from oehr_customers order by cust_last_name, cust_first_name;
 select /*insert*/ * from oehr_departments order by department_name;

@@ -17,7 +17,7 @@ prompt CREATE OBJECTS
 @tables\oehr_warehouses.sql
 
 prompt - indexes
-rem foreign key indexes are created automatically with a script
+-- foreign key indexes are created automatically with a script
 create index oehr_temp_name_01_ix on oehr_customers            (cust_email);
 create index oehr_temp_name_02_ix on oehr_customers            (cust_last_name);
 create index oehr_temp_name_03_ix on oehr_customers            (upper(cust_last_name), upper(cust_first_name));
@@ -56,4 +56,5 @@ alter table oehr_warehouses           modify location_id    references oehr_loca
 @views/oehr_emp_details_view.sql
 
 @../_global_scripts/create_missing_fk_indexes.sql OEHR
-@../_global_scripts/manage_constraint_names.sql OEHR
+@../_global_scripts/unify_index_names.sql OEHR
+@../_global_scripts/unify_constraint_names.sql OEHR

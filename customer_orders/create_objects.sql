@@ -18,4 +18,6 @@ prompt CREATE OBJECTS
 @views/co_store_orders_status.sql
 @views/co_store_orders.sql
 
-@../_global_scripts/manage_constraint_names.sql co
+@../_global_scripts/create_missing_fk_indexes.sql CO
+@../_global_scripts/unify_index_names.sql CO
+@../_global_scripts/unify_constraint_names.sql CO

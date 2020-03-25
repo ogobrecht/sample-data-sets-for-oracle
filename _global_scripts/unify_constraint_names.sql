@@ -1,13 +1,47 @@
-set define on verify off
-prompt - manage constraint names for tables prefixed with "&1"
+/*******************************************************************************
+# Unify Constraint Names
+
+Unify the names of constraints to the following naming convention:
+
+    <table_name>_<column_list>_<constraint_type><additional_underscores_for_distinct_names>
+
+Example constraint Names:
+
+- EMPLOYEES_C1_NN
+- EMPLOYEES_C1_PK
+- EMPLOYEES_C7_FK
+- JOB_HISTORY_C2_C3_CK
+
+## Usage
+
+    -- all constraints in current schema
+    @unify_constraint_names.sql
+
+    -- only constraints from tables prefixed with HR
+    @unify_constraint_names.sql HR
+
+##  Meta
+- Author: [Ottmar Gobrecht](https://ogobrecht.github.io)
+- Script: [unify_constraint_names.sql](https://github.com/ogobrecht/sql-scripts/unify_constraint_names.sql)
+
+## Changelog
+- 2020-03-25: Initial version
+*******************************************************************************/
+
+prompt UNIFY CONSTRAINT NAMES
+set define on serveroutput on verify off feedback off
 variable prefix varchar2(10)
+
+declare
+  v_count pls_integer := 0;
 begin
   :prefix := '&1';
-end;
-/
-set define off
-
-begin for i in (
+  if :prefix is not null then
+    dbms_output.put_line('- for tables prefixed with ' || :prefix);
+  else
+    dbms_output.put_line('- for all tables');
+  end if;
+  for i in (
 --------------------------------------------------------------------------------
 with constraints_base as (
   select
@@ -94,8 +128,10 @@ order by
   new_constraint_name,
   constraint_name
 --------------------------------------------------------------------------------
-) loop
+  ) loop
     execute immediate i.ddl;
+    v_count := v_count + 1;
   end loop;
+  dbms_output.put_line('- ' || v_count || ' constraints renamed');
 end;
 /

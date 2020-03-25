@@ -1,22 +1,54 @@
-set define on verify off
-prompt - manage index names for tables prefixed with "&1"
+/*******************************************************************************
+# Unify Index Names
+
+Unify the names of indexes to the following naming convention:
+
+    <table_name>_<column_list>_<constraint_type>_IX
+
+Example index Names:
+
+- OEHR_COUNTRIES_C1_PK
+- OEHR_COUNTRIES_C1_NN
+- OEHR_COUNTRIES_C3_FK
+- OEHR_INVENTORIES_C1_C2_PK
+- OEHR_JOB_HISTORY_C2_C3_CK
+
+## Usage
+
+    -- all indexes in current schema
+    @unify_index_names.sql
+
+    -- only indexes from tables prefixed with HR
+    @unify_index_names.sql HR
+
+##  Meta
+- Author: [Ottmar Gobrecht](https://ogobrecht.github.io)
+- Script: [unify_index_names.sql](https://github.com/ogobrecht/sql-scripts/unify_index_names.sql)
+
+## Changelog
+- 2020-03-25: Initial version
+*******************************************************************************/
+
+prompt UNIFY INDEX NAMES
+set define on serveroutput on verify off feedback off
 variable prefix varchar2(10)
 begin
   :prefix := '&1';
-end;
-/
-set define off
-
-begin for i in (
+  if :prefix is not null then
+    dbms_output.put_line('- for tables prefixed with ' || :prefix);
+  else
+    dbms_output.put_line('- for all tables');
+  end if;
+  for i in (
 --------------------------------------------------------------------------------
-with 
+with
 function get_column_expression (
   p_index_name       varchar2,
   p_column_position  integer
 ) return varchar2 is
   v_return varchar2(4000 char);
 begin
-  for i in (select column_expression 
+  for i in (select column_expression
               from sys.user_ind_expressions
              where index_name = p_index_name
                and column_position = p_column_position) loop
@@ -35,9 +67,9 @@ indexes_base as (
     sys.user_indexes                   ui
     join sys.user_ind_columns          uic on ui.table_name = uic.table_name and ui.index_name = uic.index_name
     left join sys.user_ind_expressions uie on uic.index_name = uie.index_name and uic.column_position = uie.column_position
-    left join sys.user_tab_columns     utc on ui.table_name = utc.table_name 
+    left join sys.user_tab_columns     utc on ui.table_name = utc.table_name
                                            and ( uic.column_name = utc.column_name
-                                                 or 
+                                                 or
                                                  instr(get_column_expression(uic.index_name,uic.column_position), utc.column_name) > 0 )
   where ui.table_name not like 'BIN$%'
     and ui.table_name like case when :prefix is not null then :prefix || '\_%' else '%' end escape '\'
@@ -121,8 +153,10 @@ order by
   new_index_name,
   index_name
 --------------------------------------------------------------------------------
-) loop
+  ) loop
     execute immediate i.ddl;
+    v_count := v_count + 1;
   end loop;
+  dbms_output.put_line('- ' || v_count || ' indexes renamed');
 end;
 /

@@ -16,7 +16,7 @@ Enables all foreign key constraints related to the tables of the hr model (param
 
 ## Manage Constraint Names
 
-example: `manage_constraint_names.sql hr`
+example: `unify_constraint_names.sql hr`
 
 Generate unique constraint names, which are constructed in this way:
 
@@ -37,7 +37,7 @@ EXAMPLES
 
 ## Manage Index Names
 
-example: `manage_index_names.sql hr`
+example: `unify_index_names.sql hr`
 
 Generate unique constraint names, which are constructed in this way:
 
