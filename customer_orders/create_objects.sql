@@ -6,11 +6,14 @@ prompt CREATE OBJECTS
 @tables/co_products.sql
 @tables/co_stores.sql
 
-@indexes/co_customers.sql
-@indexes/co_orders.sql
+prompt - indexes
+-- foreign key indexes are created automatically with a script
+create index co_customers_name_ix     on co_customers (full_name);
 
-@ref_constraints/co_order_items.sql
-@ref_constraints/co_orders.sql
+prompt - ref constraints
+alter table co_order_items modify product_id references co_products  disable;
+alter table co_orders modify customer_id     references co_customers disable;
+alter table co_orders modify store_id        references co_stores    disable;
 
 @views/co_customer_order_products.sql
 @views/co_product_orders.sql
@@ -18,6 +21,6 @@ prompt CREATE OBJECTS
 @views/co_store_orders_status.sql
 @views/co_store_orders.sql
 
-@../_global_scripts/create_missing_fk_indexes.sql CO
-@../_global_scripts/unify_index_names.sql CO
-@../_global_scripts/unify_constraint_names.sql CO
+@../_global_scripts/create_missing_fk_indexes.sql "CO"
+@../_global_scripts/unify_index_names.sql "CO"
+@../_global_scripts/unify_constraint_names.sql "CO"

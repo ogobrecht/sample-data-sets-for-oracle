@@ -1,6 +1,6 @@
-prompt REMOVE DATA
+@../_global_scripts/disable_all_foreign_key_constraints.sql "ED"
 
-@../_global_scripts/disable_all_foreign_key_constraints.sql ed
+prompt REMOVE DATA
 
 prompt - truncate table ed_Dept
 truncate table ed_dept;

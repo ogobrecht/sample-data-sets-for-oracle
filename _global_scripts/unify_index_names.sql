@@ -1,61 +1,71 @@
 /*******************************************************************************
-# Unify Index Names
 
-Unify the names of indexes to the following naming convention:
+Unify Index Names
+=================
+
+Unify the names of indexes in the current schema to the following naming
+convention:
 
     <table_name>_<column_list>_<constraint_type>_IX
 
-Example index Names:
+To ensure distinct index names, up to three underscores are appended when
+names are already in use (rare cases, but possible). Each column in the column
+list is constructed by concatenating the character `C` with the column id in
+the table. The column list is ordered by the column position in the index.
 
-- OEHR_COUNTRIES_C1_PK
-- OEHR_COUNTRIES_C1_NN
-- OEHR_COUNTRIES_C3_FK
-- OEHR_INVENTORIES_C1_C2_PK
-- OEHR_JOB_HISTORY_C2_C3_CK
+Example index names:
 
-## Usage
+- `OEHR_EMPLOYEES_C1_PK_IX`
+- `OEHR_EMPLOYEES_C4_UK_IX`
+- `OEHR_EMPLOYEES_C3_C2_IX`
+- `OEHR_EMPLOYEES_C11_FK_IX`
 
-    -- all indexes in current schema
-    @unify_index_names.sql
+Usage
+-----
+- `@unify_index_names.sql ""` (all indexes in current schema)
+- `@unify_index_names.sql "OEHR"` (only indexes from tables prefixed with "OEHR")
 
-    -- only indexes from tables prefixed with HR
-    @unify_index_names.sql HR
-
-##  Meta
+Meta
+----
 - Author: [Ottmar Gobrecht](https://ogobrecht.github.io)
-- Script: [unify_index_names.sql](https://github.com/ogobrecht/sql-scripts/unify_index_names.sql)
+- Script: [unify_index_names.sql](https://github.com/ogobrecht/oracle-sql-scripts/blob/master/unify_index_names.sql)
+- Last Update: 2020-03-25
 
-## Changelog
-- 2020-03-25: Initial version
 *******************************************************************************/
 
-prompt UNIFY INDEX NAMES
 set define on serveroutput on verify off feedback off
-variable prefix varchar2(10)
+prompt UNIFY INDEX NAMES
+declare
+  v_prefix varchar2(100);
+  v_count  pls_integer := 0;
 begin
-  :prefix := '&1';
-  if :prefix is not null then
-    dbms_output.put_line('- for tables prefixed with ' || :prefix);
+  v_prefix := '&1';
+  if v_prefix is not null then
+    dbms_output.put_line('- for tables prefixed with "' || v_prefix || '"');
   else
     dbms_output.put_line('- for all tables');
   end if;
   for i in (
 --------------------------------------------------------------------------------
 with
-function get_column_expression (
-  p_index_name       varchar2,
-  p_column_position  integer
-) return varchar2 is
-  v_return varchar2(4000 char);
-begin
-  for i in (select column_expression
-              from sys.user_ind_expressions
-             where index_name = p_index_name
-               and column_position = p_column_position) loop
-    v_return := substr(i.column_expression, 1, 4000);
-  end loop;
-  return v_return;
-end;
+index_column_expressions as (
+  -- working with long columns: http://www.oracle-developer.net/display.php?id=430
+  select
+    x.index_name,
+    x.table_name,
+    x.column_position,
+    x.column_expression -- type long :-(
+  from
+    xmltable('/ROWSET/ROW'
+      passing (select dbms_xmlgen.getxmltype(
+        q'[select * from user_ind_expressions where table_name not like 'BIN%']'
+        ) from dual)
+      columns
+        index_name        varchar2(128)  path 'INDEX_NAME',
+        table_name        varchar2(128)  path 'TABLE_NAME',
+        column_position   varchar2(128)  path 'COLUMN_POSITION',
+        column_expression varchar2(4000) path 'COLUMN_EXPRESSION') x
+),
 indexes_base as (
   select
     ui.table_name,
@@ -66,13 +76,14 @@ indexes_base as (
   from
     sys.user_indexes                   ui
     join sys.user_ind_columns          uic on ui.table_name = uic.table_name and ui.index_name = uic.index_name
-    left join sys.user_ind_expressions uie on uic.index_name = uie.index_name and uic.column_position = uie.column_position
+    left join index_column_expressions ice on uic.index_name = ice.index_name and uic.column_position = ice.column_position
     left join sys.user_tab_columns     utc on ui.table_name = utc.table_name
                                            and ( uic.column_name = utc.column_name
                                                  or
                                                  instr(get_column_expression(uic.index_name,uic.column_position), utc.column_name) > 0 )
-  where ui.table_name not like 'BIN$%'
-    and ui.table_name like case when :prefix is not null then :prefix || '\_%' else '%' end escape '\'
+  where
+    ui.table_name like case when v_prefix is not null then v_prefix || '\_%' else '%' end escape '\'
+    and ui.table_name not like 'BIN$%'
   group by
     ui.table_name,
     ui.index_name,
@@ -91,7 +102,7 @@ constraints_pk_fk as (
   where
     constraint_type in('P','R')
     and uc.table_name not like 'BIN$%'
-    and uc.table_name like case when :prefix is not null then :prefix || '\_%' else '%' end escape '\'
+    and uc.table_name like case when v_prefix is not null then v_prefix || '\_%' else '%' end escape '\'
   group by
     uc.table_name,
     uc.constraint_type,

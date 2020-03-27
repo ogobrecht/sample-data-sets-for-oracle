@@ -1,5 +1,5 @@
 prompt - insert into co_orders
-set define off
+set define off feedback off
 
 begin
   insert into co_orders (order_id,order_datetime,customer_id,store_id,order_status) values (1,to_timestamp('04-02-2018 13.20.22.245676861','DD-MM-YYYY HH24.MI.SS.FF'),3,1,'CANCELLED');

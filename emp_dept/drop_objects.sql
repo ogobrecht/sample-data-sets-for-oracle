@@ -1,6 +1,6 @@
-prompt DROP OBJECTS
+@../_global_scripts/disable_all_foreign_key_constraints.sql "ED"
 
-@../_global_scripts/disable_all_foreign_key_constraints.sql ed
+prompt DROP OBJECTS
 
 prompt - view ed_emp_dept_v
 drop view ed_emp_dept_v;

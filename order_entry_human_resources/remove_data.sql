@@ -1,6 +1,6 @@
-prompt REMOVE DATA
+@../_global_scripts/disable_all_foreign_key_constraints.sql "OEHR"
 
-@../_global_scripts/disable_all_foreign_key_constraints.sql OEHR
+prompt REMOVE DATA
 
 prompt - truncate table oehr_countries
 truncate table oehr_countries;

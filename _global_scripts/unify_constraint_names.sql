@@ -1,43 +1,54 @@
 /*******************************************************************************
-# Unify Constraint Names
 
-Unify the names of constraints to the following naming convention:
+Unify Constraint Names
+======================
 
-    <table_name>_<column_list>_<constraint_type><additional_underscores_for_distinct_names>
+Unify the names of table constraints in the current schema to the following
+naming convention:
 
-Example constraint Names:
+    <table_name>_<column_list>_<constraint_type>
 
-- EMPLOYEES_C1_NN
-- EMPLOYEES_C1_PK
-- EMPLOYEES_C7_FK
-- JOB_HISTORY_C2_C3_CK
+To ensure distinct constraint names, up to three underscores are appended when
+names are already in use (rare cases, but possible). Each column in the column
+list is constructed by concatenating the character `C` with the column id in
+the table. The column list is ordered by the column position in the constraint.
 
-## Usage
+Example constraint names:
 
-    -- all constraints in current schema
-    @unify_constraint_names.sql
+- `OEHR_EMPLOYEES_C1_NN`
+- `OEHR_EMPLOYEES_C1_PK`
+- `OEHR_EMPLOYEES_C4_UK`
+- `OEHR_EMPLOYEES_C10_FK`
+- `OEHR_JOB_HISTORY_C2_C3_CK`
 
-    -- only constraints from tables prefixed with HR
-    @unify_constraint_names.sql HR
+Only the constraint types C (check), P (primary key), U (unique key) and
+R (referential integrity, foreign key) are supported. Other constraint types
+like V (with check option, on a view) or O (with read only, on a view) can not
+be renamed and they are created implicitly with their base objects (as far as I
+know).
 
-##  Meta
+Usage
+-----
+- `@unify_constraint_names.sql ""` (all constraints in current schema)
+- `@unify_constraint_names.sql "OEHR"` (only constraints from tables prefixed with "OEHR")
+
+Meta
+----
 - Author: [Ottmar Gobrecht](https://ogobrecht.github.io)
-- Script: [unify_constraint_names.sql](https://github.com/ogobrecht/sql-scripts/unify_constraint_names.sql)
+- Script: [unify_constraint_names.sql](https://github.com/ogobrecht/oracle-sql-scripts/blob/master/unify_constraint_names.sql)
+- Last Update: 2020-03-25
 
-## Changelog
-- 2020-03-25: Initial version
 *******************************************************************************/
 
-prompt UNIFY CONSTRAINT NAMES
 set define on serveroutput on verify off feedback off
-variable prefix varchar2(10)
-
+prompt UNIFY CONSTRAINT NAMES
 declare
+  v_prefix varchar2(100);
   v_count pls_integer := 0;
 begin
-  :prefix := '&1';
-  if :prefix is not null then
-    dbms_output.put_line('- for tables prefixed with ' || :prefix);
+  v_prefix := '&1';
+  if v_prefix is not null then
+    dbms_output.put_line('- for tables prefixed with "' || v_prefix || '"');
   else
     dbms_output.put_line('- for all tables');
   end if;
@@ -48,30 +59,38 @@ with constraints_base as (
     uc.table_name,
     uc.constraint_name,
     case
-      when regexp_like ( uc.search_condition_vc,
+      when uc.constraint_type = 'C' and
+           regexp_like ( uc.search_condition_vc,
                          '^\s*"{0,1}'
                          || utc.column_name
                          || '"{0,1}\s+is\s+not\s+null\s*$',
                          'i' )
-      then 'NN'
-      else replace(uc.constraint_type, 'R', 'F') || 'K'
+        then 'NN'
+      when uc.constraint_type = 'R'
+        then 'FK'
+      when uc.constraint_type in ('C','P','U')
+        then uc.constraint_type || 'K'
+      else uc.constraint_type
     end as constraint_type,
     utc.column_name,
-    utc.column_id
+    utc.column_id,
+    ucc.position
   from
          user_constraints  uc
-    join user_cons_columns ucc on  uc.constraint_name = ucc.constraint_name
-    join user_tab_columns  utc on  ucc.table_name     = utc.table_name
-                               and ucc.column_name    = utc.column_name
+    left join user_cons_columns ucc on  uc.constraint_name = ucc.constraint_name
+    left join user_tab_columns  utc on  ucc.table_name     = utc.table_name
+                                    and ucc.column_name    = utc.column_name
   where
-    --without prefix we will find all user tables
-    uc.table_name like case when :prefix is not null then :prefix || '\_%' else '%' end escape '\'
+    uc.table_name like case when v_prefix is not null then v_prefix || '\_%' else '%' end escape '\'
+    and uc.constraint_type in ('C','P','U','R') -- only the types we can rename
+    and uc.table_name not like 'BIN$%'
   group by
     uc.table_name,
     uc.constraint_name,
     uc.constraint_type,
     utc.column_name,
     utc.column_id,
+    ucc.position,
     uc.search_condition_vc
 ),
 constraints as (
@@ -79,7 +98,7 @@ constraints as (
     table_name,
     constraint_name,
     table_name || '_'
-      || listagg('C' || column_id, '_') within group(order by column_id)
+      || listagg('C' || column_id, '_') within group(order by position)
       || '_' || constraint_type
     as new_constraint_name
   from

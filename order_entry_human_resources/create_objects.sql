@@ -29,32 +29,32 @@ create index oehr_temp_name_08_ix on oehr_orders               (order_date);
 create index oehr_temp_name_09_ix on oehr_product_descriptions (translated_name);
 create index oehr_temp_name_10_ix on oehr_product_information  (supplier_id);
 
-prompt - referential constraints
-alter table oehr_countries            modify region_id      references oehr_regions;
-alter table oehr_customers            modify account_mgr_id references oehr_employees;
-alter table oehr_departments          modify location_id    references oehr_locations;
-alter table oehr_departments          modify manager_id     references oehr_employees;
-alter table oehr_employees            modify department_id  references oehr_departments;
-alter table oehr_employees            modify job_id         references oehr_jobs;
-alter table oehr_employees            modify manager_id     references oehr_employees;
-alter table oehr_inventories          modify product_id     references oehr_product_information;
-alter table oehr_inventories          modify warehouse_id   references oehr_warehouses;
-alter table oehr_job_history          modify department_id  references oehr_departments;
-alter table oehr_job_history          modify employee_id    references oehr_employees;
-alter table oehr_job_history          modify job_id         references oehr_jobs;
-alter table oehr_locations            modify country_id     references oehr_countries;
-alter table oehr_order_items          modify order_id       references oehr_orders               on delete cascade;
-alter table oehr_order_items          modify product_id     references oehr_product_information;
-alter table oehr_orders               modify customer_id    references oehr_customers            on delete set null;
-alter table oehr_orders               modify sales_rep_id   references oehr_employees            on delete set null;
-alter table oehr_product_descriptions modify product_id     references oehr_product_information;
-alter table oehr_warehouses           modify location_id    references oehr_locations            on delete set null;
+prompt - referential constraints (disabled)
+alter table oehr_countries            modify region_id      references oehr_regions                                 disable;
+alter table oehr_customers            modify account_mgr_id references oehr_employees                               disable;
+alter table oehr_departments          modify location_id    references oehr_locations                               disable;
+alter table oehr_departments          modify manager_id     references oehr_employees                               disable;
+alter table oehr_employees            modify department_id  references oehr_departments                             disable;
+alter table oehr_employees            modify job_id         references oehr_jobs                                    disable;
+alter table oehr_employees            modify manager_id     references oehr_employees                               disable;
+alter table oehr_inventories          modify product_id     references oehr_product_information                     disable;
+alter table oehr_inventories          modify warehouse_id   references oehr_warehouses                              disable;
+alter table oehr_job_history          modify department_id  references oehr_departments                             disable;
+alter table oehr_job_history          modify employee_id    references oehr_employees                               disable;
+alter table oehr_job_history          modify job_id         references oehr_jobs                                    disable;
+alter table oehr_locations            modify country_id     references oehr_countries                               disable;
+alter table oehr_order_items          modify order_id       references oehr_orders               on delete cascade  disable;
+alter table oehr_order_items          modify product_id     references oehr_product_information                     disable;
+alter table oehr_orders               modify customer_id    references oehr_customers            on delete set null disable;
+alter table oehr_orders               modify sales_rep_id   references oehr_employees            on delete set null disable;
+alter table oehr_product_descriptions modify product_id     references oehr_product_information                     disable;
+alter table oehr_warehouses           modify location_id    references oehr_locations            on delete set null disable;
 
 @triggers/oehr_calc_line_item_id.sql
 @triggers/oehr_update_job_history.sql
 
 @views/oehr_emp_details_view.sql
 
-@../_global_scripts/create_missing_fk_indexes.sql OEHR
-@../_global_scripts/unify_index_names.sql OEHR
-@../_global_scripts/unify_constraint_names.sql OEHR
+@../_global_scripts/create_missing_fk_indexes.sql "OEHR"
+@../_global_scripts/unify_index_names.sql "OEHR"
+@../_global_scripts/unify_constraint_names.sql "OEHR"

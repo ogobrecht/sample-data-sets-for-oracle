@@ -1,7 +1,5 @@
 prompt LOAD DATA
 
-@../_global_scripts/disable_all_foreign_key_constraints.sql co
-
 @data/co_customers.sql
 @data/co_order_items.sql
 @data/co_orders.sql
@@ -11,6 +9,6 @@ prompt LOAD DATA
 prompt - commit work
 commit;
 
-@../_global_scripts/enable_all_foreign_key_constraints.sql co
+@../_global_scripts/enable_all_foreign_key_constraints.sql "CO"
 
 @reset_identity_columns.sql

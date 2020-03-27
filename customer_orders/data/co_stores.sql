@@ -1,5 +1,5 @@
 prompt - insert into co_stores
-set define off
+set define off feedback off
 
 begin
   insert into co_stores (store_id,store_name,web_address,physical_address,latitude,longitude,logo,logo_mime_type) values (1,'Online','https://www.example.com',null,null,null, EMPTY_BLOB(),null);

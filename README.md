@@ -32,16 +32,18 @@ The list of data sets:
 - [x] Order Entry & Human Resources ([source oe][oe], [source hr][hr]), Copyright Oracle ([license][ora])
 - [x] Customer Orders ([source][co]), Copyright Oracle ([license][ora])
 - [ ] movies ([source][m]), Copyright xxx ([license][xxx])
+- [] ? (create an issue or a pull request)
 
 For more info about the Oracle sample schemas see the [docs][oradoc].
 
 The list of global helper scripts:
 
-- [x] Manage constraint names (renaming in same style)
+- [x] Create missing foreign key indexes
 - [x] Disable/enable all foreign key constraints
-- [ ] Manage index names (renaming in same style)
-- [ ] Create missing foreign key indexes
+- [x] Unify constraint names
+- [x] Unify index names
 - [ ] Reset identity columns for all tables
+- [] ? (create an issue or a pull request)
 
 Hope this helps someone else...
 

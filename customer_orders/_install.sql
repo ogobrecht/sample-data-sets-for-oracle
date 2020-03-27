@@ -4,10 +4,10 @@ spool _logs/install.log
 
 prompt
 prompt Install sample data model "customer orders"
-prompt ============================================================
+prompt ================================================================================
 @create_objects.sql
 @load_data.sql
-prompt ============================================================
+prompt ================================================================================
 prompt Done
 prompt
 

@@ -1,6 +1,6 @@
-prompt DROP OBJECTS
+@../_global_scripts/disable_all_foreign_key_constraints.sql "CO"
 
-@../_global_scripts/disable_all_foreign_key_constraints.sql co
+prompt DROP OBJECTS
 
 prompt - view co_customer_order_products
 drop view co_customer_order_products;

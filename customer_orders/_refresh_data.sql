@@ -4,10 +4,10 @@ spool _logs/refresh_data.log
 
 prompt
 prompt Refresh data of sample data model "customer orders"
-prompt ============================================================
+prompt ================================================================================
 @remove_data.sql
 @load_data.sql
-prompt ============================================================
+prompt ================================================================================
 prompt Done
 prompt
 

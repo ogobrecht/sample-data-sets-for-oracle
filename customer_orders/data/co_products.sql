@@ -1,5 +1,5 @@
 prompt - insert into co_products
-set define off
+set define off feedback off
 
 declare
   prod_details varchar2(32767);

@@ -1,5 +1,5 @@
 prompt - insert into co_customers
-set define off
+set define off feedback off
 
 begin
   insert into co_customers (customer_id,email_address,full_name) values (1,'tammy.bryant@internalmail','Tammy Bryant');

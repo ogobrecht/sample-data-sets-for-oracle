@@ -1,6 +1,6 @@
-prompt REMOVE DATA
+@../_global_scripts/disable_all_foreign_key_constraints.sql "CO"
 
-@../_global_scripts/disable_all_foreign_key_constraints.sql co
+prompt REMOVE DATA
 
 prompt - truncate table co_customers
 truncate table co_customers;
