@@ -1,6 +1,8 @@
-set define off feedback off
+set define on serveroutput on verify off feedback off
 whenever sqlerror exit sql.sqlcode rollback
-spool _logs/install.log
+column date_time new_val date_time
+select to_char(sysdate,'yyyymmdd_hh24miss') as date_time from dual;
+spool _logs/&date_time._install.log
 
 prompt
 prompt Install sample data model "customer orders"

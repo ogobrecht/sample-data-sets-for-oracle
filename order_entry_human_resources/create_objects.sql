@@ -55,6 +55,6 @@ alter table oehr_warehouses           modify location_id    references oehr_loca
 
 @views/oehr_emp_details_view.sql
 
-@../_global_scripts/create_missing_fk_indexes.sql "OEHR"
+@../_global_scripts/create_missing_foreign_key_indexes.sql "OEHR"
 @../_global_scripts/unify_index_names.sql "OEHR"
 @../_global_scripts/unify_constraint_names.sql "OEHR"

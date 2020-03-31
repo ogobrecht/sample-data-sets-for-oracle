@@ -9,6 +9,6 @@ alter table ed_emp modify mgr    references ed_emp  disable;
 
 @views/ed_emp_dept_v.sql
 
-@../_global_scripts/create_missing_fk_indexes.sql "ED"
+@../_global_scripts/create_missing_foreign_key_indexes.sql "ED"
 @../_global_scripts/unify_index_names.sql "ED"
 @../_global_scripts/unify_constraint_names.sql "ED"

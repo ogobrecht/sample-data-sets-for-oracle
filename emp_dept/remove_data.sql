@@ -2,8 +2,8 @@
 
 prompt REMOVE DATA
 
-prompt - truncate table ed_Dept
+prompt - truncate table ed_dept
 truncate table ed_dept;
 
-prompt - truncate table edp_em
+prompt - truncate table ed_emp
 truncate table ed_emp;

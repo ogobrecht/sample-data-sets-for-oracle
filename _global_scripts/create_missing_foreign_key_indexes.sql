@@ -19,13 +19,13 @@ Example index names:
 
 Usage
 -----
-- `@create_missing_fk_indexes.sql ""` (all tables)
-- `@create_missing_fk_indexes.sql "OEHR"` (only for tables prefixed with "OEHR")
+- `@create_missing_foreign_key_indexes.sql ""` (all tables)
+- `@create_missing_foreign_key_indexes.sql "OEHR"` (only for tables prefixed with "OEHR")
 
 Meta
 ----
 - Author: [Ottmar Gobrecht](https://ogobrecht.github.io)
-- Script: [create_missing_fk_indexes.sql](https://github.com/ogobrecht/oracle-sql-scripts/blob/master/create_missing_fk_indexes.sql)
+- Script: [create_missing_foreign_key_indexes.sql](https://github.com/ogobrecht/oracle-sql-scripts/blob/master/create_missing_foreign_key_indexes.sql)
 - Last Update: 2020-03-25
 
 *******************************************************************************/
