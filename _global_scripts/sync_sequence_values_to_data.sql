@@ -22,17 +22,17 @@ Meta
 *******************************************************************************/
 
 set define on serveroutput on verify off feedback off
-prompt RESET IDENTITY COLUMNS
+prompt SYNC SEQUENCE VALUES TO DATA
 
 declare
   v_prefix     varchar2(100);
   v_nextval    pls_integer;
   v_dataval    pls_integer;
   v_difference pls_integer;
-  v_ddl        varchar2(1000);
-  v_count_identity_column     pls_integer := 0;
-  v_count_column_data_default pls_integer := 0;
-  v_count_trigger_source      pls_integer := 0;
+  v_count_skipped  pls_integer := 0;
+  v_count_identity pls_integer := 0;
+  v_count_default  pls_integer := 0;
+  v_count_trigger  pls_integer := 0;
 begin
   v_prefix := '&1';
   if v_prefix is not null then
@@ -157,52 +157,69 @@ from
     select * from triggers_ )
   natural join user_tab_cols
   natural join user_sequences
+where
+  table_name like case when v_prefix is not null then v_prefix || '\_%' else '%' end escape '\'
 --------------------------------------------------------------------------------
   ) loop
-    begin
+    execute immediate
+      'select max(' || i.column_name || ') from ' || i.table_name into v_dataval;
+    if v_dataval is null then
+      v_count_skipped := v_count_skipped + 1;
+    else
       if i.source_type = 'IDENTITY_COLUMN' then
         execute immediate 'alter table ' || i.table_name || ' modify '
           || i.column_name || ' generated ' || i.generation_type
           || case when i.default_on_null = 'YES' then ' on null' end
           || ' as identity (start with limit value)';
-        v_count_identity_column := v_count_identity_column + 1;
+        v_count_identity := v_count_identity + 1;
       else
-        execute immediate
-          'select coalesce(max(' || i.column_name || '), 0) from ' || i.table_name into v_dataval;
         execute immediate
           'select ' || i.sequence_name || '.nextval from dual' INTO v_nextval;
         v_difference := greatest(v_dataval, i.min_value) - v_nextval;
         if v_difference != 0 then
-          execute immediate
-            'alter sequence ' || i.sequence_name || ' increment by ' || v_difference;
-          execute immediate
-            'select ' || i.sequence_name || '.nextval from dual' INTO v_nextval;
-          execute immediate
-            'alter sequence ' || i.sequence_name || ' increment by ' || i.increment_by;
-          case i.source_type
-            when 'COLUMN_DATA_DEFAULT' then
-              v_count_column_data_default := v_count_column_data_default + 1;
-            when 'TRIGGER_SOURCE' then
-              v_count_trigger_source := v_count_trigger_source + 1;
-          end case;
+          begin
+              execute immediate
+                'alter sequence ' || i.sequence_name || ' increment by ' || v_difference;
+              execute immediate
+                'select ' || i.sequence_name || '.nextval from dual' INTO v_nextval;
+              execute immediate
+                'alter sequence ' || i.sequence_name || ' increment by ' || i.increment_by;
+              case i.source_type
+                when 'COLUMN_DATA_DEFAULT' then
+                  v_count_default := v_count_default + 1;
+                when 'TRIGGER_SOURCE' then
+                  v_count_trigger := v_count_trigger + 1;
+              end case;
+          exception
+            when others then
+              -- reset increment_by to original value
+              execute immediate
+                'alter sequence ' || i.sequence_name || ' increment by ' || i.increment_by;
+              raise;
+          end;
         end if;
       end if;
-    exception
-      when others then
-        -- reset increment_by to original value
-        execute immediate
-            'alter sequence ' || i.sequence_name || ' increment by ' || i.increment_by;
-        raise;
-    end;
+    end if;
   end loop;
-  dbms_output.put_line('- ' || v_count_identity_column
-    || ' implicit sequence' || case when v_count_identity_column != 1 then 's' end
-    || ' (from identity columns) synced to data');
-  dbms_output.put_line('- ' || v_count_column_data_default
-    || ' explicit sequence' || case when v_count_column_data_default != 1 then 's' end
-    || ' (from column data defaults) synced to data');
-  dbms_output.put_line('- ' || v_count_trigger_source
-    || ' explicit sequence' || case when v_count_trigger_source != 1 then 's' end
-    || ' (from trigger sources) synced to data');
+  if v_count_skipped != 0 then
+    dbms_output.put_line('- ' || v_count_skipped
+      || ' sequence' || case when v_count_skipped != 1 then 's' end
+      || ' skipped (no data in table)');
+  end if;
+  if v_count_identity != 0 then
+    dbms_output.put_line('- ' || v_count_identity
+      || ' implicit sequence' || case when v_count_identity != 1 then 's' end
+      || ' (from identity columns) synced to data');
+  end if;
+  if v_count_default != 0 then
+    dbms_output.put_line('- ' || v_count_default
+      || ' explicit sequence' || case when v_count_default != 1 then 's' end
+      || ' (from column data defaults) synced to data');
+  end if;
+  if v_count_trigger != 0 then
+    dbms_output.put_line('- ' || v_count_trigger
+      || ' explicit sequence' || case when v_count_trigger != 1 then 's' end
+      || ' (from trigger sources) synced to data');
+  end if;
 end;
 /
