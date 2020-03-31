@@ -4,9 +4,9 @@ A collection of common data sets reworked for identity columns and easy installa
 
 The copyright of the data sets is always under the original creators. A link to the original data set is provided where possible. If you miss a link or information here then please create an issue and provide as much information as possible.
 
-The data sets from Oracle were normally created for a dedicated schema. As I need the models mainly for testing purposes I changed that and omitted all the schema creation parts of the scripts. Instead all objects from a model get a prefix - an example: All object from the customer orders schema are prefixed with `co_`. This allows me to use all models in parallel in a single schema and easily identify the model the object belongs to.
+The data sets from Oracle were normally created for a dedicated schema. As I need the models mainly for testing purposes I changed that and omitted all the schema creation parts of the scripts. Instead all objects from a model get a prefix - an example: All object from the customer orders schema are prefixed with `CO_`. This allows me to use all models in parallel in a single schema and easily identify the model the object belongs to.
 
-All table scripts are created with the simplest possible options for easy readability - no fancy constraint and index names. Constraints and indexes will be renamed with global helper scripts after the table creation.
+All table scripts are created with the simplest possible options for easy readability - no fancy constraint and index names. Constraints and indexes will be renamed with global helper scripts after the table creation. Only real indexes are coded - foreign key indexes are generated with a global helper script.
 
 ## Installation
 
@@ -31,19 +31,19 @@ The list of data sets:
 - [x] EMP & DEPT ([source][ed], original script), Copyright Oracle ([license][oradn])
 - [x] Order Entry & Human Resources ([source oe][oe], [source hr][hr]), Copyright Oracle ([license][ora])
 - [x] Customer Orders ([source][co]), Copyright Oracle ([license][ora])
-- [ ] movies ([source][m]), Copyright xxx ([license][xxx])
-- [] ? (create an issue or a pull request)
+- [ ] Movies ([source][m]), Copyright xxx ([license][xxx])
+- [ ] Anything else? (create an issue or a pull request)
 
 For more info about the Oracle sample schemas see the [docs][oradoc].
 
 The list of global helper scripts:
 
-- [x] Create missing foreign key indexes
 - [x] Disable/enable all foreign key constraints
+- [x] Create missing foreign key indexes
 - [x] Unify constraint names
 - [x] Unify index names
-- [ ] Reset identity columns for all tables
-- [] ? (create an issue or a pull request)
+- [x] Sync sequence values to data
+- [ ] Anything else? (create an issue or a pull request)
 
 Hope this helps someone else...
 
