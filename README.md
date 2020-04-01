@@ -28,13 +28,13 @@ Check the resulting objects:
 
 The list of data sets:
 
-- [x] EMP & DEPT ([source][ed], original script), Copyright Oracle ([license][oradn])
-- [x] Order Entry & Human Resources ([source oe][oe], [source hr][hr]), Copyright Oracle ([license][ora])
-- [x] Customer Orders ([source][co]), Copyright Oracle ([license][ora])
-- [ ] Movies ([source][m]), Copyright xxx ([license][xxx])
+- [x] EMP & DEPT ([source](https://github.com/oracle/dotnet-db-samples/blob/master/schemas/scott.sql)), Copyright Oracle ([MIT license](https://github.com/oracle/dotnet-db-samples/blob/master/LICENSE))
+- [x] Order Entry & Human Resources ([source oe](https://github.com/oracle/db-sample-schemas/tree/master/order_entry), [source hr](https://github.com/oracle/db-sample-schemas/tree/master/human_resources)), Copyright Oracle ([MIT license](https://github.com/oracle/db-sample-schemas/blob/master/LICENSE.md))
+- [x] Customer Orders ([source](https://github.com/oracle/db-sample-schemas/tree/master/customer_orders)), Copyright Oracle ([MIT license](https://github.com/oracle/db-sample-schemas/blob/master/LICENSE.md))
+- [ ] Sakila DVD Rental Store([source](https://github.com/jOOQ/jOOQ/tree/master/jOOQ-examples/Sakila), [original source](https://code.google.com/archive/p/sakila-sample-database-ports/)), Copyright MySQL AB documentation team, DB Software Laboratory, Lukas Eder ([BSD-3-Clause license](http://opensource.org/licenses/BSD-3-Clause))
 - [ ] Anything else? (create an issue or a pull request)
 
-For more info about the Oracle sample schemas see the [docs][oradoc].
+For more info about the Oracle sample schemas see the [docs](https://docs.oracle.com/database/121/COMSC/overview.htm#COMSC002).
 
 The list of global helper scripts:
 
@@ -49,11 +49,3 @@ Hope this helps someone else...
 
 Happy data modeling and testing
 Ottmar
-
-[co]: https://github.com/oracle/db-sample-schemas/tree/master/customer_orders
-[ed]: https://github.com/oracle/dotnet-db-samples/blob/master/schemas/scott.sql
-[hr]: https://github.com/oracle/db-sample-schemas/tree/master/human_resources
-[m]: ???
-[ora]: https://github.com/oracle/db-sample-schemas/blob/master/LICENSE.md
-[oradn]: https://github.com/oracle/dotnet-db-samples/blob/master/LICENSE
-[oradoc]: https://docs.oracle.com/database/121/COMSC/overview.htm#COMSC002
