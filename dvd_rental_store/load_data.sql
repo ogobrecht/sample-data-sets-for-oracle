@@ -1,8 +1,17 @@
 prompt LOAD DATA
 
 @data/drs_actor.sql
+@data/drs_address.sql
+@data/drs_category.sql
 @data/drs_city.sql
 @data/drs_country.sql
+@data/drs_customer.sql
+@data/drs_film.sql
+@data/drs_language.sql
+@data/xxx.sql
+@data/xxx.sql
+@data/xxx.sql
+@data/xxx.sql
 @data/xxx.sql
 @data/xxx.sql
 @data/xxx.sql

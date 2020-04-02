@@ -2,9 +2,9 @@
 
 A collection of common data sets reworked for identity columns and easy installation/deinstallation for testing purposes.
 
-The copyright of the data sets is always under the original creators. A link to the original data set is provided where possible. If you miss a link or information here then please create an issue and provide as much information as possible.
+The copyright of the data sets is always under the original creators. A link to the original data set is provided where possible. If you miss here a link or information then please create an issue and provide as much information as possible.
 
-The data sets from Oracle were normally created for a dedicated schema. As I need the models mainly for testing purposes I changed that and omitted all the schema creation parts of the scripts. Instead all objects from a model get a prefix - an example: All object from the customer orders schema are prefixed with `CO_`. This allows me to use all models in parallel in a single schema and easily identify the model the object belongs to.
+The data sets from Oracle were normally created for a dedicated schema. As I need the data sets mainly for testing purposes I changed that and omitted all the schema creation parts of the scripts. Instead all objects from a data set get a prefix - an example: All object from the customer orders schema are prefixed with `CO_`. This allows me to use all data sets in parallel in a single schema and easily identify the data set the object belongs to.
 
 All table scripts are created with the simplest possible options for easy readability - no fancy constraint and index names. Constraints and indexes will be renamed with global helper scripts after the table creation. Only real indexes are coded - foreign key indexes are generated with a global helper script.
 
@@ -12,7 +12,7 @@ All table scripts are created with the simplest possible options for easy readab
 
 Because of the use of identity columns and listagg with overflow you need at least an Oracle Database with version 12.2 or higher to install the data sets.
 
-You can install a single data model with the provided scripts in the models subdirectory. There are always three scripts to handle the installation, deinstallation and the the data refresh. Here the example script calls for the customer orders model (co) - please make sure you have set your shell to the correct language settings to match the encoding of the files (example for Windows command line):
+You can install a single data set with the provided scripts in the data set subdirectory. There are always three scripts to handle the installation, deinstallation and the the data refresh. Here the example script calls for the customer orders data set (co) - please make sure you have set your shell to the correct language settings to match the encoding of the files (example for Windows command line):
 
 1. `set NLS_LANG=AMERICAN_AMERICA.AL32UTF8`
 2. `cd customer_orders`
