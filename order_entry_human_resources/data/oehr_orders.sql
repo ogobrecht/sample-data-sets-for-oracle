@@ -109,3 +109,5 @@ insert into oehr_orders (order_id,order_date,order_mode,customer_id,order_status
 insert into oehr_orders (order_id,order_date,order_mode,customer_id,order_status,order_total,sales_rep_id,promotion_id) values (2458,to_timestamp('2019-03-01 14:34:12.000000000','yyyy-mm-dd hh24:mi:ssxff'),'direct',101,0,78279.6,153,null);
 end;
 /
+
+commit;

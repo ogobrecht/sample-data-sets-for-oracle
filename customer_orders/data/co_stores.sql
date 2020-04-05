@@ -65,3 +65,5 @@ Delegación Miguel Hidalgo - C.P. 11000',19.428489,-99.205745, EMPTY_BLOB(),null
   insert into co_stores (store_id,store_name,web_address,physical_address,latitude,longitude,logo,logo_mime_type) values (23,'Tel Aviv',null,'B, Aharon Bart St 18, Petah Tikva, 4951400, Israel',32.100664,34.862138, EMPTY_BLOB(),null);
 end;
 /
+
+commit;

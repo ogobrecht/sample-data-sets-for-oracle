@@ -18,3 +18,5 @@ begin
   insert into ed_emp (empno,ename,job,mgr,hiredate,sal,comm,deptno) values ('7934','MILLER','CLERK','7782',to_date('23.01.82','DD.MM.RR'),'1300',null,'10');
 end;
 /
+
+commit;

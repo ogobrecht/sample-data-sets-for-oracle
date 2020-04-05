@@ -8,3 +8,5 @@ begin
   insert into ed_dept (deptno,dname,loc) values ('40','OPERATIONS','BOSTON');
 end;
 /
+
+commit;

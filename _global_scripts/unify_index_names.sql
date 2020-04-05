@@ -36,7 +36,7 @@ Meta
 set define on serveroutput on verify off feedback off
 prompt UNIFY INDEX NAMES
 declare
-  v_prefix varchar2(100);
+  v_prefix varchar2(100 char);
   v_count  pls_integer := 0;
 begin
   v_prefix := '&1';
@@ -61,10 +61,10 @@ index_column_expressions as (
         q'[select * from user_ind_expressions where table_name not like 'BIN%']'
         ) from dual)
       columns
-        index_name        varchar2(128)  path 'INDEX_NAME',
-        table_name        varchar2(128)  path 'TABLE_NAME',
-        column_position   varchar2(128)  path 'COLUMN_POSITION',
-        column_expression varchar2(4000) path 'COLUMN_EXPRESSION') x
+        index_name        varchar2(128 char)  path 'INDEX_NAME',
+        table_name        varchar2(128 char)  path 'TABLE_NAME',
+        column_position   varchar2(128 char)  path 'COLUMN_POSITION',
+        column_expression varchar2(4000 char) path 'COLUMN_EXPRESSION') x
 ),
 indexes_base as (
   select

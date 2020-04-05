@@ -25,7 +25,7 @@ set define on serveroutput on verify off feedback off
 prompt SYNC SEQUENCE VALUES TO DATA
 
 declare
-  v_prefix     varchar2(100);
+  v_prefix     varchar2(100 char);
   v_nextval    pls_integer;
   v_dataval    pls_integer;
   v_difference pls_integer;
@@ -70,9 +70,9 @@ column_data_defaults as (
         from
           dual)
       columns
-        table_name      varchar2(128)  path 'TABLE_NAME',
-        column_name     varchar2(128)  path 'COLUMN_NAME',
-        data_default    varchar2(4000) path 'DATA_DEFAULT') x
+        table_name      varchar2(128 char)  path 'TABLE_NAME',
+        column_name     varchar2(128 char)  path 'COLUMN_NAME',
+        data_default    varchar2(4000 char) path 'DATA_DEFAULT') x
   where
     data_default not like '%ISEQ$$%'
     and regexp_like(data_default,'.nextval','i')
@@ -192,7 +192,7 @@ where
               end case;
           exception
             when others then
-              -- reset increment_by to original value
+              -- reset increment by to original value
               execute immediate
                 'alter sequence ' || i.sequence_name || ' increment by ' || i.increment_by;
               raise;

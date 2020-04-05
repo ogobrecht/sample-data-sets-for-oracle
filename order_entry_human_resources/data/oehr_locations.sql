@@ -27,3 +27,5 @@ insert into oehr_locations (location_id,street_address,postal_code,city,state_pr
 insert into oehr_locations (location_id,street_address,postal_code,city,state_province,country_id) values (1400,'2014 Jabberwocky Rd','26192','Southlake','Texas','US');
 end;
 /
+
+commit;

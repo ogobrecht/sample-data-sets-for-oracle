@@ -292,3 +292,5 @@ insert into oehr_product_information (product_id,product_name,product_descriptio
 insert into oehr_product_information (product_id,product_name,product_description,category_id,weight_class,warranty_period,supplier_id,product_status,list_price,min_price,catalog_url) values (2262,'ZIP 100','ZIP Drive, 100 MB capacity (external) plus cable for parallel port connection',17,2,'+01-06',102054,'orderable',98,81,'http://www.supp-102054.com/cat/hw/p2262.html');
 end;
 /
+
+commit;

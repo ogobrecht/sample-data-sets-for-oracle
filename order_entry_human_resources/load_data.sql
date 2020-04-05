@@ -16,8 +16,5 @@ prompt LOAD DATA
 @data\oehr_regions.sql
 @data\oehr_warehouses.sql
 
-prompt - commit work
-commit;
-
 @../_global_scripts/enable_all_foreign_key_constraints.sql "OEHR"
 @../_global_scripts/sync_sequence_values_to_data.sql "OEHR"

@@ -31,3 +31,5 @@ insert into oehr_departments (department_id,department_name,manager_id,location_
 insert into oehr_departments (department_id,department_name,manager_id,location_id) values (120,'Treasury',null,1700);
 end;
 /
+
+commit;

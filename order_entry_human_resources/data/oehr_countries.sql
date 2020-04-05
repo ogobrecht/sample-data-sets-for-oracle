@@ -29,3 +29,5 @@ insert into oehr_countries (country_id,country_name,region_id) values ('ZM','Zam
 insert into oehr_countries (country_id,country_name,region_id) values ('ZW','Zimbabwe',4);
 end;
 /
+
+commit;

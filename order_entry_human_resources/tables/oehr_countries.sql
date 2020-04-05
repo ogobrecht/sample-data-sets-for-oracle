@@ -1,7 +1,7 @@
 prompt - table oehr_countries
 
 create table oehr_countries (
-  country_id   char(2 char)      not null,
+  country_id   char(2 byte)      not null,
   country_name varchar2(40 char) ,
   region_id    number            ,
   --

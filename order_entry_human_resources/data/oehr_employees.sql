@@ -111,3 +111,5 @@ insert into oehr_employees (employee_id,first_name,last_name,email,phone_number,
 insert into oehr_employees (employee_id,first_name,last_name,email,phone_number,hire_date,job_id,salary,commission_pct,manager_id,department_id) values (149,'Eleni','Zlotkey','EZLOTKEY','011.44.1344.429018',to_date('2019-08-14','yyyy-mm-dd'),'SA_MAN',10500,0.2,100,80);
 end;
 /
+
+commit;

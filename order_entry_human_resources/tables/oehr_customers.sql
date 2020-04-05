@@ -8,7 +8,7 @@ create table oehr_customers (
   postal_code     varchar2(10 char) ,
   city            varchar2(30 char) ,
   state_province  varchar2(10 char) ,
-  country_id      char(2 char)      ,
+  country_id      char(2 byte)      ,
   phone_number    varchar2(25 char) ,
   nls_language    varchar2(3 char)  ,
   nls_territory   varchar2(30 char) ,

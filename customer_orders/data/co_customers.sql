@@ -396,3 +396,5 @@ begin
   insert into co_customers (customer_id,email_address,full_name) values (392,'adam.miller@internalmail','Adam Miller');
 end;
 /
+
+commit;

@@ -20,35 +20,32 @@ truncate table drs_country;
 prompt - truncate table drs_customer
 truncate table drs_customer;
 
+prompt - truncate table drs_film_actor
+truncate table drs_film_actor;
+
+prompt - truncate table drs_film_category
+truncate table drs_film_category;
+
+prompt - truncate table drs_film_text
+truncate table drs_film_text;
+
 prompt - truncate table drs_film
 truncate table drs_film;
+
+prompt - truncate table drs_inventory
+truncate table drs_inventory;
 
 prompt - truncate table drs_language
 truncate table drs_language;
 
-prompt - truncate table xxx
-truncate table xxx;
+prompt - truncate table drs_payment
+truncate table drs_payment;
 
-prompt - truncate table xxx
-truncate table xxx;
+prompt - truncate table drs_rental
+truncate table drs_rental;
 
-prompt - truncate table xxx
-truncate table xxx;
+prompt - truncate table drs_staff
+truncate table drs_staff;
 
-prompt - truncate table xxx
-truncate table xxx;
-
-prompt - truncate table xxx
-truncate table xxx;
-
-prompt - truncate table xxx
-truncate table xxx;
-
-prompt - truncate table xxx
-truncate table xxx;
-
-prompt - truncate table xxx
-truncate table xxx;
-
-prompt - truncate table xxx
-truncate table xxx;
+prompt - truncate table drs_store
+truncate table drs_store;

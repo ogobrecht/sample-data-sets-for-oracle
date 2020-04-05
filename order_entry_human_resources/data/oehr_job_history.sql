@@ -14,3 +14,5 @@ insert into oehr_job_history (employee_id,start_date,end_date,job_id,department_
 insert into oehr_job_history (employee_id,start_date,end_date,job_id,department_id) values (122,to_date('2018-07-17','yyyy-mm-dd'),to_date('2019-07-16','yyyy-mm-dd'),'ST_CLERK',50);
 end;
 /
+
+commit;

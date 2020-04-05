@@ -33,7 +33,7 @@ Meta
 set define on serveroutput on verify off feedback off
 prompt CREATE MISSING FOREIGN KEY INDEXES
 declare
-  v_prefix varchar2(100);
+  v_prefix varchar2(100 char);
   v_count pls_integer := 0;
 begin
   v_prefix := '&1';

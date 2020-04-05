@@ -2,7 +2,7 @@ prompt - insert into co_products
 set define off feedback off
 
 declare
-  prod_details varchar2(32767);
+  prod_details varchar2(32767 char);
 begin
   insert into co_products (product_id,product_name,unit_price,product_details) values (1,'Boy''s Shirt (White)',29.55,utl_raw.cast_to_raw ( '{"colour":"white","gender":"Boy''s","brand":"COMTOURS","description":"Labore commodo velit cupidatat ullamco ea proident velit sunt adipisicing. Esse tempor exercitation reprehenderit ullamco esse incididunt dolore laboris Lorem ipsum fugiat ea.","sizes":["1 Yr","2 Yr","3-4 Yr","5-6 Yr","7-8 Yr","9-10 Yr"],"reviews":[]}') );
   insert into co_products (product_id,product_name,unit_price,product_details) values (2,'Women''s Shirt (Green)',16.67,utl_raw.cast_to_raw ( '{"colour":"green","gender":"Women''s","brand":"FLEETMIX","description":"Excepteur anim adipisicing aliqua ad. Ex aliquip ad tempor cupidatat dolore ipsum ex anim Lorem aute amet.","sizes":[0,2,4,6,8,10,12,14,16,18,20],"reviews":[{"rating":8,"review":"Laborum ipsum adipisicing magna nulla tempor incididunt."},{"rating":10,"review":"Cupidatat dolore nulla pariatur quis quis."},{"rating":9,"review":"Pariatur mollit dolor in deserunt cillum consectetur."},{"rating":3,"review":"Dolore occaecat mollit id ad aliqua irure reprehenderit amet eiusmod pariatur."},{"rating":10,"review":"Est pariatur et qui minim velit non consectetur sint fugiat ad."},{"rating":6,"review":"Et pariatur ipsum eu qui."},{"rating":6,"review":"Voluptate labore irure cupidatat mollit irure quis fugiat enim laborum consectetur officia sunt."},{"rating":8,"review":"Irure elit do et elit aute veniam proident sunt."},{"rating":8,"review":"Aute mollit proident id veniam occaecat dolore mollit dolore nostrud."}]}') );
@@ -55,3 +55,5 @@ begin
   insert into co_products (product_id,product_name,unit_price,product_details) values (46,'Girl''s Trousers (Red)',39.16,utl_raw.cast_to_raw ( '{"colour":"red","gender":"Girl''s","brand":"OTHERSIDE","description":"Lorem officia laborum deserunt veniam cillum anim adipisicing minim aute ad esse sint sit tempor. Magna enim proident eiusmod incididunt adipisicing duis deserunt pariatur sint officia occaecat est minim ipsum.","sizes":["1 Yr","2 Yr","3-4 Yr","5-6 Yr","7-8 Yr","9-10 Yr"],"reviews":[{"rating":9,"review":"Magna magna ullamco ipsum pariatur occaecat eiusmod amet ea sunt reprehenderit dolore aute voluptate."},{"rating":7,"review":"Eiusmod cupidatat cillum qui dolor consequat."},{"rating":4,"review":"Do proident cillum cupidatat laboris in cillum."},{"rating":5,"review":"Sunt eiusmod ea labore est sint adipisicing velit duis."},{"rating":6,"review":"Ut consectetur ad magna officia ut aliqua deserunt magna."}]}') );
 end;
 /
+
+commit;

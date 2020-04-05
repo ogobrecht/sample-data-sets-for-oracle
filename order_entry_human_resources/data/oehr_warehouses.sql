@@ -14,3 +14,4 @@ insert into oehr_warehouses (warehouse_id,warehouse_name,location_id) values (9,
 end;
 /
 
+commit;

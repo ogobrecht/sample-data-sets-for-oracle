@@ -668,3 +668,5 @@ insert into oehr_order_items (order_id,line_item_id,product_id,unit_price,quanti
 insert into oehr_order_items (order_id,line_item_id,product_id,unit_price,quantity,order_item_id) values (2458,12,3163,32,142,1660);
 end;
 /
+
+commit;

@@ -1116,3 +1116,5 @@ insert into oehr_inventories (product_id,warehouse_id,quantity_on_hand) values (
 insert into oehr_inventories (product_id,warehouse_id,quantity_on_hand) values (3400,9,179);
 end;
 /
+
+commit;

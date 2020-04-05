@@ -3918,3 +3918,5 @@ begin
   insert into co_order_items (order_id,line_item_id,product_id,unit_price,quantity) values (1950,2,26,48.75,4);
 end;
 /
+
+commit;

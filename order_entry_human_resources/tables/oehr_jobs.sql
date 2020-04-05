@@ -1,8 +1,8 @@
 prompt - table oehr_jobs
 
 create table oehr_jobs (
-  job_id     varchar2(10) ,
-  job_title  varchar2(35) not null,
+  job_id     varchar2(10 char) ,
+  job_title  varchar2(35 char) not null,
   min_salary number(6)    ,
   max_salary number(6)    ,
   --

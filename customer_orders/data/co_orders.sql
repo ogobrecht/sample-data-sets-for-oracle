@@ -1954,3 +1954,5 @@ begin
   insert into co_orders (order_id,order_datetime,customer_id,store_id,order_status) values (1950,to_timestamp('12-04-2019 21.41.06.642640525','DD-MM-YYYY HH24.MI.SS.FF'),348,23,'COMPLETE');
 end;
 /
+
+commit;

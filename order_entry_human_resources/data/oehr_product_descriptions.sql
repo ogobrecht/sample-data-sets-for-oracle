@@ -292,3 +292,5 @@ insert into oehr_product_descriptions (product_id,language_id,translated_name,tr
 insert into oehr_product_descriptions (product_id,language_id,translated_name,translated_description) values (2262,'US','ZIP 100','ZIP Drive, 100 MB capacity (external) plus cable for parallel port connection');
 end;
 /
+
+commit;

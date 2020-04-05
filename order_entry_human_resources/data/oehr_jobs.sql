@@ -23,3 +23,5 @@ insert into oehr_jobs (job_id,job_title,min_salary,max_salary) values ('SH_CLERK
 insert into oehr_jobs (job_id,job_title,min_salary,max_salary) values ('ST_CLERK','Stock Clerk',2000,5000);
 end;
 /
+
+commit;

@@ -4,7 +4,7 @@ create table oehr_job_history (
   employee_id   integer      not null,
   start_date    date         not null,
   end_date      date         not null,
-  job_id        varchar2(10) not null,
+  job_id        varchar2(10 char) not null,
   department_id integer      ,
   --
   primary key (employee_id, start_date),

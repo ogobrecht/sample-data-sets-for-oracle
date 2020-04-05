@@ -323,3 +323,5 @@ insert into oehr_customers (customer_id,cust_first_name,cust_last_name,street_ad
 insert into oehr_customers (customer_id,cust_first_name,cust_last_name,street_address,postal_code,city,state_province,country_id,phone_number,nls_language,nls_territory,credit_limit,cust_email,account_mgr_id) values (245,'Max','von Sydow','2 2Nd St # A','21842','Ocean City','MD','US','+1 410 123 4840','us','AMERICA',2400,'Max.vonSydow@REDSTART.COM',145);
 end;
 /
+
+commit;
