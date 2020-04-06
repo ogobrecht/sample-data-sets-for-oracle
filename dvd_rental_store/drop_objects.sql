@@ -10,9 +10,9 @@ prompt DROP OBJECTS
 -- end;
 
 prompt - package customers
-drop package customers;
+drop package drs_customers;
 prompt - package rentals
-drop package rentals;
+drop package drs_rentals;
 
 prompt - view drs_actor_info_v
 drop view drs_actor_info_v;

@@ -1,0 +1,16 @@
+-- the used select statements to produce the insert statements (with SQL Developer)
+select /*insert*/ * from drs_actor order by actor_id;
+select /*insert*/ * from drs_address order by address_id;
+select /*insert*/ * from drs_category order by category_id;
+select /*insert*/ * from drs_city order by city_id;
+select /*insert*/ * from drs_country order by country_id;
+select /*insert*/ * from drs_customer order by customer_id;
+select /*insert*/ * from drs_film_actor order by actor_id, film_id;
+select /*insert*/ * from drs_film_category order by film_id, category_id;
+select /*insert*/ * from drs_film order by film_id;
+select /*insert*/ * from drs_inventory order by inventory_id;
+select /*insert*/ * from drs_language order by language_id;
+select /*insert*/ * from drs_payment order by payment_id;
+select /*insert*/ * from drs_rental order by rental_id;
+select /*insert*/ * from drs_staff order by staff_id;
+select /*insert*/ * from drs_store order by store_id;

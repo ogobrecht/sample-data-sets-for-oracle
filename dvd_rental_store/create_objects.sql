@@ -84,11 +84,11 @@ alter table drs_store         modify manager_staff_id     references drs_staff  
 @views/drs_sales_by_film_category_v.sql
 @views/drs_staff_list_v.sql
 
-@packages/customers.sql
-@packages/rentals.sql
+@packages/drs_customers.pks
+@packages/drs_rentals.pks
 
-@packages/customers_body.sql
-@packages/rentals_body.sql
+@packages/drs_customers.pkb
+@packages/drs_rentals.pkb
 
 @../_global_scripts/create_missing_foreign_key_indexes.sql "DRS"
 @../_global_scripts/unify_index_names.sql "DRS"
