@@ -1,4 +1,4 @@
-prompt - insert into drs_store 2 rows
+prompt - insert     2 rows into drs_store
 set define off feedback off
 
 begin

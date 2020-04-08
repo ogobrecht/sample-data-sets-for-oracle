@@ -1,4 +1,4 @@
-prompt - insert into drs_category 16 rows
+prompt - insert    16 rows into drs_category
 set define off feedback off
 
 begin

@@ -1,8 +1,6 @@
-prompt - insert into drs_film 1000 rows
+prompt - insert  1000 rows into drs_film
 set define off feedback off
 
-declare
-  v_start pls_integer := dbms_utility.get_time;
 begin
   insert into drs_film (film_id,title,description,release_year,language_id,original_language_id,rental_duration,rental_rate,length,replacement_cost,rating,special_features,last_update) values (1,'ACADEMY DINOSAUR','A Epic Drama of a Feminist And a Mad Scientist who must Battle a Teacher in The Canadian Rockies','2006',1,null,6,0.99,86,20.99,'PG','Deleted Scenes,Behind the Scenes',to_date('2020-04-06','yyyy-mm-dd'));
   insert into drs_film (film_id,title,description,release_year,language_id,original_language_id,rental_duration,rental_rate,length,replacement_cost,rating,special_features,last_update) values (2,'ACE GOLDFINGER','A Astounding Epistle of a Database Administrator And a Explorer who must Find a Car in Ancient China','2006',1,null,3,4.99,48,12.99,'G','Trailers,Deleted Scenes',to_date('2020-04-06','yyyy-mm-dd'));
@@ -1004,11 +1002,6 @@ begin
   insert into drs_film (film_id,title,description,release_year,language_id,original_language_id,rental_duration,rental_rate,length,replacement_cost,rating,special_features,last_update) values (998,'ZHIVAGO CORE','A Fateful Yarn of a Composer And a Man who must Face a Boy in The Canadian Rockies','2006',1,null,6,0.99,105,10.99,'NC-17','Deleted Scenes',to_date('2020-04-06','yyyy-mm-dd'));
   insert into drs_film (film_id,title,description,release_year,language_id,original_language_id,rental_duration,rental_rate,length,replacement_cost,rating,special_features,last_update) values (999,'ZOOLANDER FICTION','A Fateful Reflection of a Waitress And a Boat who must Discover a Sumo Wrestler in Ancient China','2006',1,null,5,2.99,101,28.99,'R','Trailers,Deleted Scenes',to_date('2020-04-06','yyyy-mm-dd'));
   insert into drs_film (film_id,title,description,release_year,language_id,original_language_id,rental_duration,rental_rate,length,replacement_cost,rating,special_features,last_update) values (1000,'ZORRO ARK','A Intrepid Panorama of a Mad Scientist And a Boy who must Redeem a Boy in A Monastery','2006',1,null,3,4.99,50,18.99,'NC-17','Trailers,Commentaries,Behind the Scenes',to_date('2020-04-06','yyyy-mm-dd'));
-
-  dbms_output.put_line('- '
-                        ||(dbms_utility.get_time - v_start) / 100
-                        || ' seconds');
-
 end;
 /
 

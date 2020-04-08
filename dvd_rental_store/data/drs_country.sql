@@ -1,4 +1,4 @@
-prompt - insert into drs_country 109 rows
+prompt - insert   109 rows into drs_country
 set define off feedback off
 
 begin

@@ -1,4 +1,4 @@
-prompt - insert into drs_customer 599 rows
+prompt - insert   599 rows into drs_customer
 set define off feedback off
 
 begin

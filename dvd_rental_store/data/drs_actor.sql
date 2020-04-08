@@ -1,4 +1,4 @@
-prompt - insert into drs_actor 200 rows
+prompt - insert   200 rows into drs_actor
 set define off feedback off
 
 begin

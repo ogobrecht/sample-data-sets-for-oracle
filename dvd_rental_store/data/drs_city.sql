@@ -1,4 +1,4 @@
-prompt - insert into drs_city 600 rows
+prompt - insert   600 rows into drs_city
 set define off feedback off
 
 begin

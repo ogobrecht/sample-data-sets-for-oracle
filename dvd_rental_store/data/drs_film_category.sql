@@ -1,4 +1,4 @@
-prompt - insert into drs_film_category 1000 rows
+prompt - insert  1000 rows into drs_film_category
 set define off feedback off
 
 begin

@@ -1,4 +1,4 @@
-prompt - insert into drs_staff 2 rows
+prompt - insert     2 rows into drs_staff
 set define off feedback off
 
 begin

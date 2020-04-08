@@ -1,4 +1,4 @@
-prompt - insert into drs_payment 16049 rows
+prompt - insert 16049 rows into drs_payment
 set define off feedback off
 
 begin

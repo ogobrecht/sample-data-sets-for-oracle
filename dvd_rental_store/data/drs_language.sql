@@ -1,4 +1,4 @@
-prompt - insert into drs_language 6 rows
+prompt - insert     6 rows into drs_language
 set define off feedback off
 
 begin

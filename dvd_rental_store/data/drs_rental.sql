@@ -1,4 +1,4 @@
-prompt - insert into drs_rental 16044 rows
+prompt - insert 16044 rows into drs_rental
 set define off feedback off
 
 begin

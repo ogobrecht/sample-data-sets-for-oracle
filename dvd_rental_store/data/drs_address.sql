@@ -1,4 +1,4 @@
-prompt - insert into drs_address 603 rows
+prompt - insert   603 rows into drs_address
 set define off feedback off
 
 begin

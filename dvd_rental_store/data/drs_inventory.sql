@@ -1,4 +1,4 @@
-prompt - insert into drs_inventory 4581 rows
+prompt - insert  4581 rows into drs_inventory
 set define off feedback off
 
 begin
