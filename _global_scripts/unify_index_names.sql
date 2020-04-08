@@ -80,7 +80,7 @@ indexes_base as (
     left join sys.user_tab_columns     utc on ui.table_name = utc.table_name
                                            and ( uic.column_name = utc.column_name
                                                  or
-                                                 instr(get_column_expression(uic.index_name,uic.column_position), utc.column_name) > 0 )
+                                                 instr(ice.column_expression, utc.column_name) > 0 )
   where
     ui.table_name like case when v_prefix is not null then v_prefix || '\_%' else '%' end escape '\'
     and ui.table_name not like 'BIN$%'
