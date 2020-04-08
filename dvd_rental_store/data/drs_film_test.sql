@@ -2,9 +2,9 @@ prompt - insert into drs_film 1000 rows
 set define off feedback off
 
 declare
-type  drs_film_tab is table of drs_film%rowtype index by pls_integer;
-r     drs_film_tab;
-start pls_integer := dbms_utility.get_time;
+type  r_t is table of drs_film%rowtype index by pls_integer;
+r     r_t;
+v_start pls_integer := dbms_utility.get_time;
 begin
 --
 r(1).film_id := 100001;
@@ -69,7 +69,7 @@ forall i in 1..r.count
   );
 
 dbms_output.put_line('- '
-                      ||(dbms_utility.get_time - start) / 100
+                      ||(dbms_utility.get_time - v_start) / 100
                       || ' seconds');
 
 end;
