@@ -23,22 +23,20 @@ You can install a single data set with the provided scripts in the data set subd
 
 ## List of Data Sets, Copyrights
 
-- [x] EMP & DEPT (2 tabs, 18 rows), [source](https://github.com/oracle/dotnet-db-samples/blob/master/schemas/scott.sql), Copyright Oracle ([MIT license](https://github.com/oracle/dotnet-db-samples/blob/master/LICENSE))
-- [x] Order Entry & Human Resources (15 tabs, 3.002 rows), [source oe](https://github.com/oracle/db-sample-schemas/tree/master/order_entry), [source hr](https://github.com/oracle/db-sample-schemas/tree/master/human_resources), Copyright Oracle ([MIT license](https://github.com/oracle/db-sample-schemas/blob/master/LICENSE.md))
-- [x] Customer Orders (5 tabs, 6.325 rows), [source](https://github.com/oracle/db-sample-schemas/tree/master/customer_orders), Copyright Oracle ([MIT license](https://github.com/oracle/db-sample-schemas/blob/master/LICENSE.md))
-- [x] Sakila DVD Rental Store (16 tabs, 46.273 rows), [source](https://github.com/jOOQ/jOOQ/tree/master/jOOQ-examples/Sakila), [original source](https://code.google.com/archive/p/sakila-sample-database-ports/), Copyright MySQL AB documentation team, DB Software Laboratory, Lukas Eder ([BSD-3-Clause license](http://opensource.org/licenses/BSD-3-Clause))
-- [ ] Anything else? (create an issue or a pull request)
+- EMP & DEPT (2 tabs, 18 rows), [source](https://github.com/oracle/dotnet-db-samples/blob/master/schemas/scott.sql), Copyright Oracle ([MIT license](https://github.com/oracle/dotnet-db-samples/blob/master/LICENSE))
+- Order Entry & Human Resources (15 tabs, 3.002 rows), [source oe](https://github.com/oracle/db-sample-schemas/tree/master/order_entry), [source hr](https://github.com/oracle/db-sample-schemas/tree/master/human_resources), Copyright Oracle ([MIT license](https://github.com/oracle/db-sample-schemas/blob/master/LICENSE.md))
+- Customer Orders (5 tabs, 6.325 rows), [source](https://github.com/oracle/db-sample-schemas/tree/master/customer_orders), Copyright Oracle ([MIT license](https://github.com/oracle/db-sample-schemas/blob/master/LICENSE.md))
+- Sakila DVD Rental Store (16 tabs, 46.273 rows), [source](https://github.com/jOOQ/jOOQ/tree/master/jOOQ-examples/Sakila), [original source](https://code.google.com/archive/p/sakila-sample-database-ports/), Copyright MySQL AB documentation team, DB Software Laboratory, Lukas Eder ([BSD-3-Clause license](http://opensource.org/licenses/BSD-3-Clause))
 
 For more info about the Oracle sample schemas see the [docs](https://docs.oracle.com/database/121/COMSC/overview.htm#COMSC002).
 
 ## List of Global Helper Scripts
 
-- [x] Disable/enable all foreign key constraints
-- [x] Create missing foreign key indexes
-- [x] Unify constraint names
-- [x] Unify index names
-- [x] Sync sequence values to data
-- [ ] Anything else? (create an issue or a pull request)
+- Disable/enable all foreign key constraints
+- Create missing foreign key indexes
+- Unify constraint names
+- Unify index names
+- Sync sequence values to data
 
 Hope this helps someone else...
 
