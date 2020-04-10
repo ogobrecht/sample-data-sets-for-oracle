@@ -36,13 +36,7 @@ prompt CREATE OBJECTS
 @triggers/drs_staff_biu.sql
 @triggers/drs_store_biu.sql
 
-prompt - indexes
--- foreign key indexes are created automatically with a script
-create index drs_temp_name_01_ix on drs_actor     (last_name);
-create index drs_temp_name_02_ix on drs_customer  (last_name);
-create index drs_temp_name_03_ix on drs_inventory (store_id, film_id);
-
-prompt - referential constraints (disabled)
+prompt - 22 referential constraints (disabled)
 alter table drs_address       modify city_id              references drs_city                         disable;
 alter table drs_city          modify country_id           references drs_country                      disable;
 alter table drs_customer      modify address_id           references drs_address                      disable;
@@ -65,6 +59,11 @@ alter table drs_staff         modify address_id           references drs_address
 alter table drs_staff         modify store_id             references drs_store                        disable;
 alter table drs_store         modify address_id           references drs_address                      disable;
 alter table drs_store         modify manager_staff_id     references drs_staff                        disable;
+
+prompt - 3 indexes (fk indexes are created later automatically)
+create index drs_temp_name_01_ix on drs_actor     (last_name);
+create index drs_temp_name_02_ix on drs_customer  (last_name);
+create index drs_temp_name_03_ix on drs_inventory (store_id, film_id);
 
 @types/drs_language(s)_t.sql
 @types/drs_film(s)_t.sql

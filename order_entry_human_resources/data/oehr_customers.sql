@@ -1,4 +1,4 @@
-prompt - insert into oehr_customers
+prompt - insert  319 rows into oehr_customers
 set define off
 
 begin

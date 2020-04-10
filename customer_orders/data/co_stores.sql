@@ -1,4 +1,4 @@
-prompt - insert into co_stores
+prompt - insert   23 rows into co_stores
 set define off feedback off
 
 begin

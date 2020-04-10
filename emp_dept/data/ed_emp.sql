@@ -1,4 +1,4 @@
-prompt - insert into ed_emp
+prompt - insert 14 rows into ed_emp
 set define off
 
 begin

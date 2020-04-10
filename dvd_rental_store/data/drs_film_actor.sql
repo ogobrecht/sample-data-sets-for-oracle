@@ -5463,7 +5463,8 @@ begin
   insert into drs_film_actor (actor_id,film_id,last_update) values (200,912,to_date('2020-04-06','yyyy-mm-dd'));
   insert into drs_film_actor (actor_id,film_id,last_update) values (200,945,to_date('2020-04-06','yyyy-mm-dd'));
   insert into drs_film_actor (actor_id,film_id,last_update) values (200,958,to_date('2020-04-06','yyyy-mm-dd'));
-  insert into drs_film_actor (actor_id,film_id,last_update) values (200,993,to_date('2020-04-06','yyyy-mm-dd'));end;
+  insert into drs_film_actor (actor_id,film_id,last_update) values (200,993,to_date('2020-04-06','yyyy-mm-dd'));
+end;
 /
 
 commit;

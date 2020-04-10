@@ -2,20 +2,13 @@
 
 prompt DROP OBJECTS
 
--- begin
---   for i in (select * from user_objects)loop
---     dbms_output.put_line('- ' || i.object_type || ' ' || i.object_name)
---     --execute immediate i.ddl;
---   end loop
--- end;
-
 prompt - package customers
 drop package drs_customers;
 prompt - package rentals
 drop package drs_rentals;
 
-prompt - view drs_actor_info_v
-drop view drs_actor_info_v;
+--prompt - view drs_actor_info_v
+--drop view drs_actor_info_v;
 prompt - view drs_customer_list_v
 drop view drs_customer_list_v;
 prompt - view drs_film_list_v

@@ -3,7 +3,7 @@ prompt CREATE OBJECTS
 @tables/ed_dept.sql
 @tables/ed_emp.sql
 
-prompt - referential constraints (disabled)
+prompt - 2 referential constraints (disabled)
 alter table ed_emp modify deptno references ed_dept disable;
 alter table ed_emp modify mgr    references ed_emp  disable;
 

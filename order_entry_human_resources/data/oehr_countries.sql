@@ -1,4 +1,4 @@
-prompt - insert into oehr_countries
+prompt - insert   25 rows into oehr_countries
 set define off
 
 begin

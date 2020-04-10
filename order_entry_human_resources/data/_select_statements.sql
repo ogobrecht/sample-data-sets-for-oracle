@@ -14,3 +14,23 @@ select /*insert*/ * from oehr_product_information order by product_name;
 select /*insert*/ * from oehr_promotions order by promo_id;
 select /*insert*/ * from oehr_regions order by region_id;
 select /*insert*/ * from oehr_warehouses order by warehouse_id;
+
+-- overall rows of data
+select
+  (select count(*) from oehr_countries) +            --   25
+  (select count(*) from oehr_customers) +            --  319
+  (select count(*) from oehr_departments) +          --   27
+  (select count(*) from oehr_employees) +            --  107
+  (select count(*) from oehr_inventories) +          -- 1112
+  (select count(*) from oehr_job_history) +          --   10
+  (select count(*) from oehr_jobs) +                 --   19
+  (select count(*) from oehr_locations) +            --   23
+  (select count(*) from oehr_order_items) +          --  664
+  (select count(*) from oehr_orders) +               --  105
+  (select count(*) from oehr_product_descriptions) + --  288
+  (select count(*) from oehr_product_information) +  --  288
+  (select count(*) from oehr_promotions) +           --    2
+  (select count(*) from oehr_regions) +              --    4
+  (select count(*) from oehr_warehouses)             --    9
+  as sum_rows                                        -- 3002
+from dual;

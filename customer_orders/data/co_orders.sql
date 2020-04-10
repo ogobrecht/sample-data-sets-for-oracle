@@ -1,4 +1,4 @@
-prompt - insert into co_orders
+prompt - insert 1950 rows into co_orders
 set define off feedback off
 
 begin

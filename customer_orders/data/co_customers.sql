@@ -1,4 +1,4 @@
-prompt - insert into co_customers
+prompt - insert  392 rows into co_customers
 set define off feedback off
 
 begin

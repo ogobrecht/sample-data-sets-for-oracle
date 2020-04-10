@@ -1,4 +1,4 @@
-prompt - insert into oehr_regions
+prompt - insert    4 rows into oehr_regions
 set define off
 
 begin

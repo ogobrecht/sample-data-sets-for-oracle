@@ -1,4 +1,4 @@
-prompt - insert into oehr_job_history
+prompt - insert   10 rows into oehr_job_history
 set define off
 
 begin

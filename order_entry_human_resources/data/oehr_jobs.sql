@@ -1,4 +1,4 @@
-prompt - insert into oehr_jobs
+prompt - insert   19 rows into oehr_jobs
 set define off
 
 begin

@@ -9,7 +9,6 @@ prompt LOAD DATA
 @data/drs_film_actor.sql
 @data/drs_film_category.sql
 @data/drs_film.sql
---@data/drs_film_test.sql
 @data/drs_inventory.sql
 @data/drs_language.sql
 @data/drs_payment.sql

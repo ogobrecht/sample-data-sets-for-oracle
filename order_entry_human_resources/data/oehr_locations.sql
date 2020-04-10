@@ -1,4 +1,4 @@
-prompt - insert into oehr_locations
+prompt - insert   23 rows into oehr_locations
 set define off
 
 begin

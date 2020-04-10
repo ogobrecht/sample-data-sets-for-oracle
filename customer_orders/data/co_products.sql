@@ -1,4 +1,4 @@
-prompt - insert into co_products
+prompt - insert   46 rows into co_products
 set define off feedback off
 
 declare

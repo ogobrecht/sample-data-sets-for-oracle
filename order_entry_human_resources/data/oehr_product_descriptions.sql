@@ -1,4 +1,4 @@
-prompt - insert into oehr_product_descriptions
+prompt - insert  288 rows into oehr_product_descriptions
 set define off
 
 begin

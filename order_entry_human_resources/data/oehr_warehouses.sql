@@ -1,4 +1,4 @@
-prompt - insert into oehr_warehouses
+prompt - insert    9 rows into oehr_warehouses
 set define off
 
 begin

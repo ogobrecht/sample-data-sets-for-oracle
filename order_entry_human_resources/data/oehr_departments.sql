@@ -1,4 +1,4 @@
-prompt - insert into oehr_departments
+prompt - insert   27 rows into oehr_departments
 set define off
 
 begin

@@ -1,4 +1,4 @@
-prompt - insert into oehr_orders
+prompt - insert  105 rows into oehr_orders
 set define off
 
 begin

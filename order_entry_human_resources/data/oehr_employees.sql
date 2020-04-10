@@ -1,4 +1,4 @@
-prompt - insert into oehr_employees
+prompt - insert  107 rows into oehr_employees
 set define off
 
 begin

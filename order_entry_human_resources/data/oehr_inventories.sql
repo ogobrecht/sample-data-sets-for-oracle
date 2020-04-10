@@ -1,4 +1,4 @@
-prompt - insert into oehr_inventories
+prompt - insert 1112 rows into oehr_inventories
 set define off
 
 begin

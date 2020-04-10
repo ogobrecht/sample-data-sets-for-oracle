@@ -5,8 +5,9 @@ select
   a.actor_id,
   a.first_name,
   a.last_name,
-  --fixme group concat in mysql? (was the original implementation)
-  --listagg should deliver something like category one: film title, film title; category two: film title, film title;
+  --fixme: group concat in mysql? (was the original implementation)
+  --listagg should deliver something like "category one: film title, film title; category two: film title, film title;"
+  --listagg with distinct is supported from 19c on, so we leave the view unused for now
 group_concat(distinct concat(c.name, ': ', (
     select
         group_concat(f.title order by f.title separator ', ')

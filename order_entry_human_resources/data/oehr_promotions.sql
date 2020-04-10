@@ -1,4 +1,4 @@
-prompt - insert into oehr_promotions
+prompt - insert    2 rows into oehr_promotions
 set define off
 
 begin
