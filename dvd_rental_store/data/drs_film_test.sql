@@ -19,7 +19,7 @@ r(1).length := 86;
 r(1).replacement_cost := 20.99;
 r(1).rating := 'PG';
 r(1).special_features := 'Deleted Scenes,Behind the Scenes';
-r(1).last_update := to_date('2020-04-06', 'yyyy-mm-dd');
+r(1).last_update := current_date;
 --
 r(2).film_id := 100002;
 r(2).title := 'ACADEMY DINOSAUR';
@@ -33,7 +33,7 @@ r(2).length := 86;
 r(2).replacement_cost := 20.99;
 r(2).rating := 'PG';
 r(2).special_features := 'Deleted Scenes,Behind the Scenes';
-r(2).last_update := to_date('2020-04-06', 'yyyy-mm-dd');
+r(2).last_update := current_date;
 --
 -- ...
 --

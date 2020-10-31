@@ -1,4 +1,4 @@
-/*******************************************************************************
+/*
 
 Create Missing Foreign Key Indexes
 ==================================
@@ -17,30 +17,54 @@ Example index names:
 - `OEHR_EMPLOYEES_C10_FK_IX`
 - `OEHR_EMPLOYEES_C11_FK_IX`
 
+Options
+-------
+
+The first parameter of the script can contain a JSON object with two keys:
+
+- table_prefix:
+  - If null: Takes all tables of current schema into account
+  - If not null: Use the given prefix to filter tables
+  - Example: "CO" will be expanded to `table_name like 'CO\_%' escape '\'`
+- dry_run:
+  - If true, the script will do the intended work
+  - If false, the script will only report the intended work and do nothing
+  - If omitted, it will default to false
+
 Usage
 -----
-- `@create_missing_foreign_key_indexes.sql ""` (all tables)
-- `@create_missing_foreign_key_indexes.sql "OEHR"` (only for tables prefixed with "OEHR")
+- `@create_missing_foreign_key_indexes.sql '{ table_prefix: "",     dry_run: false }'` (all tables, do the intended work)
+- `@create_missing_foreign_key_indexes.sql '{ table_prefix: "",     dry_run: true  }'` (all tables, report only)
+- `@create_missing_foreign_key_indexes.sql '{ table_prefix: "OEHR", dry_run: false }'` (only for tables prefixed with "OEHR")
+- `@create_missing_foreign_key_indexes.sql '{ table_prefix: "CO",   dry_run: true  }'` (only for tables prefixed with "CO", report only)
 
 Meta
 ----
 - Author: [Ottmar Gobrecht](https://ogobrecht.github.io)
-- Script: [create_missing_foreign_key_indexes.sql](https://github.com/ogobrecht/oracle-sql-scripts/blob/master/create_missing_foreign_key_indexes.sql)
-- Last Update: 2020-03-25
+- Script: [create_missing_foreign_key_indexes.sql …](https://github.com/ogobrecht/oracle-sql-scripts/blob/master/scripts/)
+- Last Update: 2020-10-29
 
-*******************************************************************************/
+*/
 
-set define on serveroutput on verify off feedback off
 prompt CREATE MISSING FOREIGN KEY INDEXES
+set define on serveroutput on verify off feedback off
+variable options       varchar2(4000)
+variable table_prefix  varchar2(100)
+variable dry_run       varchar2(100)
+
 declare
-  v_prefix varchar2(100 char);
   v_count pls_integer := 0;
 begin
-  v_prefix := '&1';
-  if v_prefix is not null then
-    dbms_output.put_line('- for tables prefixed with "' || v_prefix || '"');
+  :options      := '&1';
+  :table_prefix := json_value(:options, '$.table_prefix');
+  :dry_run      := nvl(json_value(:options, '$.dry_run'), 'false');
+  if :table_prefix is not null then
+    dbms_output.put_line('- for tables prefixed with "' || :table_prefix || '_"');
   else
     dbms_output.put_line('- for all tables');
+  end if;
+  if :dry_run = 'true' then
+    dbms_output.put_line('- dry run entered');
   end if;
   for i in (
 --------------------------------------------------------------------------------
@@ -56,12 +80,12 @@ with needed_indexes as (
   where
     constraint_type = 'R'
     and uc.table_name not like 'BIN$%'
-    and uc.table_name like case when v_prefix is not null then v_prefix || '\_%' else '%' end escape '\'
+    and uc.table_name like case when :table_prefix is not null then :table_prefix || '\_%' else '%' end escape '\'
   group by
     uc.table_name,
     uc.constraint_name
-    --order by uc.table_name, column_list
-),
+) --select * from needed_indexes order by table_name, column_list;
+,
 existing_indexes as (
   select
     table_name,
@@ -70,15 +94,15 @@ existing_indexes as (
     user_ind_columns
   where
     table_name not like 'BIN$%'
+    and table_name like case when :table_prefix is not null then :table_prefix || '\_%' else '%' end escape '\'
   group by
     table_name,
     index_name
-    --order by table_name, column_list
-)
+) --select * from existing_indexes order by table_name, column_list;
 select
   n.table_name,
-  n.column_list as needed_index_columns,
-  e.column_list as existing_index_columns,
+  n.column_list as needed_index_column,
+  e.column_list as existing_index_column,
   case when e.column_list is null then
     'create index ' || n.table_name || '_' || n.column_ids || '_fk_ix'
     || ' on ' || n.table_name || ' (' || n.column_list || ')'
@@ -90,9 +114,15 @@ from
 where e.column_list is null
 --------------------------------------------------------------------------------
   ) loop
-    execute immediate i.ddl;
+    dbms_output.put_line('- ' || i.ddl);
+    if :dry_run = 'false' then
+      execute immediate i.ddl;
+    end if;
     v_count := v_count + 1;
   end loop;
-  dbms_output.put_line('- ' || v_count || ' indexes created');
+
+  dbms_output.put_line('- ' || v_count || ' index'
+    || case when v_count != 1 then 'es' end || ' '
+    || case when :dry_run = 'false' then 'created' else 'reported' end);
 end;
 /

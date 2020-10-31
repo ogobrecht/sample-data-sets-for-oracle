@@ -1,4 +1,4 @@
-@../_global_scripts/disable_all_foreign_key_constraints.sql "OEHR"
+@../_global_scripts/disable_foreign_key_constraints.sql '{ table_prefix: "OEHR", dry_run: false }'
 
 prompt DROP OBJECTS
 

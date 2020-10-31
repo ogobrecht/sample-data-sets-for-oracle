@@ -1,7 +1,7 @@
-set define on serveroutput on verify off feedback off
+set define on serveroutput on verify off feedback off linesize 240
 whenever sqlerror exit sql.sqlcode rollback
 timing start refresh_data
-column date_time new_val date_time
+column date_time new_val date_time noprint
 select to_char(sysdate,'yyyymmdd_hh24miss') as date_time from dual;
 spool _logs/&date_time._refresh_data.log
 

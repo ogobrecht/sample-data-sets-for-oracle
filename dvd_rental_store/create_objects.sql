@@ -89,6 +89,6 @@ create index drs_temp_name_03_ix on drs_inventory (store_id, film_id);
 @packages/drs_customers.pkb
 @packages/drs_rentals.pkb
 
-@../_global_scripts/create_missing_foreign_key_indexes.sql "DRS"
-@../_global_scripts/unify_index_names.sql "DRS"
-@../_global_scripts/unify_constraint_names.sql "DRS"
+@../_global_scripts/create_missing_foreign_key_indexes.sql '{ table_prefix: "DRS", dry_run: false }'
+@../_global_scripts/unify_index_names.sql                  '{ table_prefix: "DRS", dry_run: false }'
+@../_global_scripts/unify_constraint_names.sql             '{ table_prefix: "DRS", dry_run: false }'

@@ -1,4 +1,4 @@
-@../_global_scripts/disable_all_foreign_key_constraints.sql "ED"
+@../_global_scripts/disable_foreign_key_constraints.sql '{ table_prefix: "ED", dry_run: false }'
 
 prompt REMOVE DATA
 

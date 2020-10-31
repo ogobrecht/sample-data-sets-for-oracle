@@ -1,4 +1,4 @@
-/*******************************************************************************
+/*
 
 Sync Sequence Values To Data
 ============================
@@ -7,25 +7,44 @@ Set sequence values to the current max data values. This is done for implicit
 sequences (identity columns) and explicit sequences (used as column default
 value or in a trigger).
 
+Options
+-------
+
+The first parameter of the script can contain a JSON object with two keys:
+
+- table_prefix:
+  - If null: Takes all tables of current schema into account
+  - If not null: Use the given prefix to filter tables
+  - Example: "CO" will be expanded to `table_name like 'CO\_%' escape '\'`
+- dry_run:
+  - If true, the script will do the intended work
+  - If false, the script will only report the intended work and do nothing
+  - If omitted, it will default to false
+
 Usage
 -----
-- `@sync_sequence_values_to_data.sql ""` (for all tables)
-- `@sync_sequence_values_to_data.sql "OEHR"` (only for tables prefixed with "OEHR")
+- `@sync_sequence_values_to_data.sql '{ table_prefix: "",     dry_run: false }'` (all tables, do the intended work)
+- `@sync_sequence_values_to_data.sql '{ table_prefix: "",     dry_run: true  }'` (all tables, report only)
+- `@sync_sequence_values_to_data.sql '{ table_prefix: "OEHR", dry_run: false }'` (only for tables prefixed with "OEHR")
+- `@sync_sequence_values_to_data.sql '{ table_prefix: "CO",   dry_run: true  }'` (only for tables prefixed with "CO", report only)
 
 Meta
 ----
 - Author: [Ottmar Gobrecht](https://ogobrecht.github.io)
-- Script: [sync_sequence_values_to_data.sql](https://github.com/ogobrecht/oracle-sql-scripts/blob/master/sync_sequence_values_to_data.sql)
-- Last Update: 2020-03-30
+- Script: [sync_sequence_values_to_data.sql …](https://github.com/ogobrecht/oracle-sql-scripts/blob/master/scripts/)
+- Last Update: 2020-10-29
 - Inspiration: https://stackoverflow.com/questions/51470/how-do-i-reset-a-sequence-in-oracle
 
-*******************************************************************************/
+*/
 
-set define on serveroutput on verify off feedback off
 prompt SYNC SEQUENCE VALUES TO DATA
+set define on serveroutput on verify off feedback off
+variable options       varchar2(4000)
+variable table_prefix  varchar2(100)
+variable dry_run       varchar2(100)
 
 declare
-  v_prefix     varchar2(100 char);
+  v_ddl        varchar2(4000);
   v_nextval    pls_integer;
   v_dataval    pls_integer;
   v_difference pls_integer;
@@ -34,11 +53,16 @@ declare
   v_count_default  pls_integer := 0;
   v_count_trigger  pls_integer := 0;
 begin
-  v_prefix := '&1';
-  if v_prefix is not null then
-    dbms_output.put_line('- for tables prefixed with "' || v_prefix || '"');
+  :options      := '&1';
+  :table_prefix := json_value(:options, '$.table_prefix');
+  :dry_run      := nvl(json_value(:options, '$.dry_run'), 'false');
+  if :table_prefix is not null then
+    dbms_output.put_line('- for tables prefixed with "' || :table_prefix || '_"');
   else
     dbms_output.put_line('- for all tables');
+  end if;
+  if :dry_run = 'true' then
+    dbms_output.put_line('- dry run entered');
   end if;
   for i in (
 --------------------------------------------------------------------------------
@@ -52,8 +76,8 @@ identity_columns as (
     generation_type
   from
     user_tab_identity_cols
-)--select * from identity_columns;
-,---------------------------------------
+) --select * from identity_columns order by table_name;
+,
 column_data_defaults as (
   -- working with long columns: http://www.oracle-developer.net/display.php?id=430
   select
@@ -76,8 +100,8 @@ column_data_defaults as (
   where
     data_default not like '%ISEQ$$%'
     and regexp_like(data_default,'.nextval','i')
-)--select * from column_data_defaults;
-,---------------------------------------
+) --select * from column_data_defaults;
+,
 triggers_base as (
   select
     trigger_name,
@@ -87,8 +111,8 @@ triggers_base as (
   where
     trigger_type = 'BEFORE EACH ROW'
     and triggering_event = 'INSERT'
-)--select * from triggers_base;
-,---------------------------------------
+) --select * from triggers_base;
+,
 triggers_column_code as (
   select
     name,
@@ -99,8 +123,8 @@ triggers_column_code as (
     type = 'TRIGGER'
     and name in (select trigger_name from triggers_base)
     and regexp_like(text,'new\..*\s+is\s+null','i')
-)--select * from triggers_column_code;
-,---------------------------------------
+) --select * from triggers_column_code;
+,
 triggers_sequence_code as (
   select
     name,
@@ -111,8 +135,8 @@ triggers_sequence_code as (
     type = 'TRIGGER'
     and name in (select trigger_name from triggers_base)
     and regexp_like(text,'.nextval','i')
-)--select * from triggers_sequence_code;
-,---------------------------------------
+) --select * from triggers_sequence_code;
+,
 triggers_all_code as (
   select
     trigger_name,
@@ -125,8 +149,8 @@ triggers_all_code as (
     triggers_base
     left join triggers_column_code   on trigger_name = triggers_column_code.name
     left join triggers_sequence_code on trigger_name = triggers_sequence_code.name
-)--select * from triggers_all_code;
-,---------------------------------------
+) --select * from triggers_all_code;
+,
 triggers_ as (
   select
     table_name,
@@ -139,8 +163,7 @@ triggers_ as (
   where
     column_name       is not null
     and sequence_name is not null
-)--select * from triggers_;
-----------------------------------------
+) --select * from triggers_;
 select
   table_name,
   column_name,
@@ -158,45 +181,55 @@ from
   natural join user_tab_cols
   natural join user_sequences
 where
-  table_name like case when v_prefix is not null then v_prefix || '\_%' else '%' end escape '\'
+  table_name like case when :table_prefix is not null then :table_prefix || '\_%' else '%' end escape '\'
 --------------------------------------------------------------------------------
   ) loop
-    execute immediate
-      'select max(' || i.column_name || ') from ' || i.table_name into v_dataval;
-    if v_dataval is null then
-      v_count_skipped := v_count_skipped + 1;
+    dbms_output.put_line('- tab:' || i.table_name || ' col:' || i.column_name
+      || ' seq:' || i.sequence_name || ' typ:' || i.source_type);
+    if :dry_run = 'true' then
+      case i.source_type
+        when 'IDENTITY_COLUMN'     then v_count_identity := v_count_identity + 1;
+        when 'COLUMN_DATA_DEFAULT' then v_count_default  := v_count_default  + 1;
+        when 'TRIGGER_SOURCE'      then v_count_trigger  := v_count_trigger  + 1;
+      end case;
     else
-      if i.source_type = 'IDENTITY_COLUMN' then
-        execute immediate 'alter table ' || i.table_name || ' modify '
-          || i.column_name || ' generated ' || i.generation_type
-          || case when i.default_on_null = 'YES' then ' on null' end
-          || ' as identity (start with limit value)';
-        v_count_identity := v_count_identity + 1;
+      execute immediate
+        'select max(' || i.column_name || ') from ' || i.table_name into v_dataval;
+      if v_dataval is null then
+        v_count_skipped := v_count_skipped + 1;
       else
-        execute immediate
-          'select ' || i.sequence_name || '.nextval from dual' INTO v_nextval;
-        v_difference := greatest(v_dataval, i.min_value) - v_nextval;
-        if v_difference != 0 then
-          begin
-              execute immediate
-                'alter sequence ' || i.sequence_name || ' increment by ' || v_difference;
-              execute immediate
-                'select ' || i.sequence_name || '.nextval from dual' INTO v_nextval;
-              execute immediate
-                'alter sequence ' || i.sequence_name || ' increment by ' || i.increment_by;
-              case i.source_type
-                when 'COLUMN_DATA_DEFAULT' then
-                  v_count_default := v_count_default + 1;
-                when 'TRIGGER_SOURCE' then
-                  v_count_trigger := v_count_trigger + 1;
-              end case;
-          exception
-            when others then
-              -- reset increment by to original value
-              execute immediate
-                'alter sequence ' || i.sequence_name || ' increment by ' || i.increment_by;
-              raise;
-          end;
+        if i.source_type = 'IDENTITY_COLUMN' then
+          execute immediate 'alter table ' || i.table_name || ' modify '
+            || i.column_name || ' generated ' || i.generation_type
+            || case when i.default_on_null = 'YES' then ' on null' end
+            || ' as identity (start with limit value)';
+          v_count_identity := v_count_identity + 1;
+        else
+          execute immediate
+            'select ' || i.sequence_name || '.nextval from dual' INTO v_nextval;
+          v_difference := greatest(v_dataval, i.min_value) - v_nextval;
+          if v_difference != 0 then
+            begin
+                execute immediate
+                  'alter sequence ' || i.sequence_name || ' increment by ' || v_difference;
+                execute immediate
+                  'select ' || i.sequence_name || '.nextval from dual' INTO v_nextval;
+                execute immediate
+                  'alter sequence ' || i.sequence_name || ' increment by ' || i.increment_by;
+                case i.source_type
+                  when 'COLUMN_DATA_DEFAULT' then
+                    v_count_default := v_count_default + 1;
+                  when 'TRIGGER_SOURCE' then
+                    v_count_trigger := v_count_trigger + 1;
+                end case;
+            exception
+              when others then
+                -- reset increment by to original value
+                execute immediate
+                  'alter sequence ' || i.sequence_name || ' increment by ' || i.increment_by;
+                raise;
+            end;
+          end if;
         end if;
       end if;
     end if;
@@ -209,17 +242,21 @@ where
   if v_count_identity != 0 then
     dbms_output.put_line('- ' || v_count_identity
       || ' implicit sequence' || case when v_count_identity != 1 then 's' end
-      || ' (from identity columns) synced to data');
+      || ' (from identity columns) '
+      || case when :dry_run = 'false' then 'synced to data' else 'reported' end);
   end if;
   if v_count_default != 0 then
     dbms_output.put_line('- ' || v_count_default
       || ' explicit sequence' || case when v_count_default != 1 then 's' end
-      || ' (from column data defaults) synced to data');
+      || ' (from column data defaults) '
+      || case when :dry_run = 'false' then 'synced to data' else 'reported' end);
+
   end if;
   if v_count_trigger != 0 then
     dbms_output.put_line('- ' || v_count_trigger
       || ' explicit sequence' || case when v_count_trigger != 1 then 's' end
-      || ' (from trigger sources) synced to data');
+      || ' (from trigger sources) '
+      || case when :dry_run = 'false' then 'synced to data' else 'reported' end);
   end if;
 end;
 /

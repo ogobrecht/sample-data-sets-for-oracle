@@ -1,4 +1,4 @@
-/*******************************************************************************
+/*
 
 Unify Index Names
 =================
@@ -8,10 +8,10 @@ convention:
 
     <table_name>_<column_list>_<constraint_type>_IX
 
-To ensure distinct index names, up to three underscores are appended when
-names are already in use (rare cases, but possible). Each column in the column
-list is constructed by concatenating the character `C` with the column id in
-the table. The column list is ordered by the column position in the index.
+Each column in the column list is constructed by concatenating the character `C`
+with the column id in the table. The column list is ordered by the column
+position in the index. To ensure distinct constraint names we append numbers
+from 1 up to 9 if needed.
 
 Example index names:
 
@@ -20,30 +20,54 @@ Example index names:
 - `OEHR_EMPLOYEES_C3_C2_IX`
 - `OEHR_EMPLOYEES_C11_FK_IX`
 
+Options
+-------
+
+The first parameter of the script can contain a JSON object with two keys:
+
+- table_prefix:
+  - If null: Takes all tables of current schema into account
+  - If not null: Use the given prefix to filter tables
+  - Example: "CO" will be expanded to `table_name like 'CO\_%' escape '\'`
+- dry_run:
+  - If true, the script will do the intended work
+  - If false, the script will only report the intended work and do nothing
+  - If omitted, it will default to false
+
 Usage
 -----
-- `@unify_index_names.sql ""` (all indexes in current schema)
-- `@unify_index_names.sql "OEHR"` (only indexes from tables prefixed with "OEHR")
+- `@unify_index_names.sql '{ table_prefix: "",     dry_run: false }'` (all tables, do the intended work)
+- `@unify_index_names.sql '{ table_prefix: "",     dry_run: true  }'` (all tables, report only)
+- `@unify_index_names.sql '{ table_prefix: "OEHR", dry_run: false }'` (only for tables prefixed with "OEHR")
+- `@unify_index_names.sql '{ table_prefix: "CO",   dry_run: true  }'` (only for tables prefixed with "CO", report only)
 
 Meta
 ----
 - Author: [Ottmar Gobrecht](https://ogobrecht.github.io)
-- Script: [unify_index_names.sql](https://github.com/ogobrecht/oracle-sql-scripts/blob/master/unify_index_names.sql)
-- Last Update: 2020-03-25
+- Script: [unify_index_names.sql …](https://github.com/ogobrecht/oracle-sql-scripts/blob/master/scripts/)
+- Last Update: 2020-10-29
 
-*******************************************************************************/
+*/
 
-set define on serveroutput on verify off feedback off
 prompt UNIFY INDEX NAMES
+set define on serveroutput on verify off feedback off
+variable options       varchar2(4000)
+variable table_prefix  varchar2(100)
+variable dry_run       varchar2(100)
+
 declare
-  v_prefix varchar2(100 char);
-  v_count  pls_integer := 0;
+  v_count pls_integer := 0;
 begin
-  v_prefix := '&1';
-  if v_prefix is not null then
-    dbms_output.put_line('- for tables prefixed with "' || v_prefix || '"');
+  :options      := '&1';
+  :table_prefix := json_value(:options, '$.table_prefix');
+  :dry_run      := nvl(json_value(:options, '$.dry_run'), 'false');
+  if :table_prefix is not null then
+    dbms_output.put_line('- for tables prefixed with "' || :table_prefix || '_"');
   else
     dbms_output.put_line('- for all tables');
+  end if;
+  if :dry_run = 'true' then
+    dbms_output.put_line('- dry run entered');
   end if;
   for i in (
 --------------------------------------------------------------------------------
@@ -82,7 +106,7 @@ indexes_base as (
                                                  or
                                                  instr(ice.column_expression, utc.column_name) > 0 )
   where
-    ui.table_name like case when v_prefix is not null then v_prefix || '\_%' else '%' end escape '\'
+    ui.table_name like case when :table_prefix is not null then :table_prefix || '\_%' else '%' end escape '\'
     and ui.table_name not like 'BIN$%'
   group by
     ui.table_name,
@@ -102,7 +126,7 @@ constraints_pk_fk as (
   where
     constraint_type in('P','R')
     and uc.table_name not like 'BIN$%'
-    and uc.table_name like case when v_prefix is not null then v_prefix || '\_%' else '%' end escape '\'
+    and uc.table_name like case when :table_prefix is not null then :table_prefix || '\_%' else '%' end escape '\'
   group by
     uc.table_name,
     uc.constraint_type,
@@ -130,21 +154,16 @@ select
   table_name,
   index_name,
   new_index_name ||
-    -- Append underscore if previous one has the same name.
     case
-      when lead(new_index_name, 1) over(order by new_index_name, index_name) = new_index_name
-      then '_'
-    end ||
-    -- Append underscore if previous previous one has the same name.
-    case
-      when lead(new_index_name, 2) over(order by new_index_name, index_name) = new_index_name
-      then '_'
-    end ||
-    -- Append underscore if previous previous previous one has the same name.
-    -- We will stop here: Please check your constraints if you encounter more than three times the same resulting name ;-)
-    case
-      when lead(new_index_name, 3) over(order by new_index_name, index_name) = new_index_name
-      then '_'
+      when lead(new_index_name, 1) over(order by new_index_name, index_name) = new_index_name then '1'
+      when  lag(new_index_name, 8) over(order by new_index_name, index_name) = new_index_name then '9'
+      when  lag(new_index_name, 7) over(order by new_index_name, index_name) = new_index_name then '8'
+      when  lag(new_index_name, 6) over(order by new_index_name, index_name) = new_index_name then '7'
+      when  lag(new_index_name, 5) over(order by new_index_name, index_name) = new_index_name then '6'
+      when  lag(new_index_name, 4) over(order by new_index_name, index_name) = new_index_name then '5'
+      when  lag(new_index_name, 3) over(order by new_index_name, index_name) = new_index_name then '4'
+      when  lag(new_index_name, 2) over(order by new_index_name, index_name) = new_index_name then '3'
+      when  lag(new_index_name, 1) over(order by new_index_name, index_name) = new_index_name then '2'
     end
   as new_index_name
 from
@@ -165,9 +184,15 @@ order by
   index_name
 --------------------------------------------------------------------------------
   ) loop
-    execute immediate i.ddl;
+    dbms_output.put_line('- ' || i.ddl);
+    if :dry_run = 'false' then
+      execute immediate i.ddl;
+    end if;
     v_count := v_count + 1;
   end loop;
-  dbms_output.put_line('- ' || v_count || ' indexes renamed');
+
+  dbms_output.put_line('- ' || v_count || ' index'
+    || case when v_count != 1 then 'es' end || ' '
+    || case when :dry_run = 'false' then 'renamed' else 'reported' end);
 end;
 /

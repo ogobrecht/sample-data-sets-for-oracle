@@ -1,3 +1,5 @@
+@../_global_scripts/disable_triggers.sql                '{ table_prefix: "DRS", dry_run: false }'
+
 prompt LOAD DATA
 
 @data/drs_actor.sql
@@ -16,5 +18,6 @@ prompt LOAD DATA
 @data/drs_staff.sql
 @data/drs_store.sql
 
-@../_global_scripts/enable_all_foreign_key_constraints.sql "DRS"
-@../_global_scripts/sync_sequence_values_to_data.sql "DRS"
+@../_global_scripts/enable_triggers.sql                '{ table_prefix: "DRS", dry_run: false }'
+@../_global_scripts/enable_foreign_key_constraints.sql '{ table_prefix: "DRS", dry_run: false }'
+@../_global_scripts/sync_sequence_values_to_data.sql   '{ table_prefix: "DRS", dry_run: false }'
