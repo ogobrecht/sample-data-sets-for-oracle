@@ -44,8 +44,8 @@ The first parameter of the script can contain a JSON object with two keys:
 Examples
 --------
 
-    @unify_constraint_names.sql "{ table_filter: '%',       dry_run: false }"
-    @unify_constraint_names.sql "{ table_filter: 'CO\_%',   dry_run: true  }"
+    @unify_constraint_names.sql "{ table_filter: '%',     dry_run: false }"
+    @unify_constraint_names.sql "{ table_filter: 'CO\_%', dry_run: true  }"
 
 Meta
 ----

@@ -37,14 +37,14 @@ The first parameter of the script can contain a JSON object with two keys:
 Examples
 --------
 
-    @unify_index_names.sql "{ table_filter: '%',       dry_run: false }"
-    @unify_index_names.sql "{ table_filter: 'CO\_%',   dry_run: true  }"
+    @unify_index_names.sql "{ table_filter: '%',     dry_run: false }"
+    @unify_index_names.sql "{ table_filter: 'CO\_%', dry_run: true  }"
 
 Meta
 ----
 - Author: [Ottmar Gobrecht](https://ogobrecht.github.io)
 - Script: [unify_index_names.sql …](https://github.com/ogobrecht/oracle-sql-scripts/blob/master/scripts/)
-- Last Update: 2020-10-29
+- Last Update: 2020-10-31
 
 */
 

@@ -24,8 +24,8 @@ The first parameter of the script can contain a JSON object with two keys:
 Examples
 --------
 
-    @sync_sequence_values_to_data.sql "{ table_filter: '%',       dry_run: false }"
-    @sync_sequence_values_to_data.sql "{ table_filter: 'CO\_%',   dry_run: true  }"
+    @sync_sequence_values_to_data.sql "{ table_filter: '%',     dry_run: false }"
+    @sync_sequence_values_to_data.sql "{ table_filter: 'CO\_%', dry_run: true  }"
 
 Meta
 ----

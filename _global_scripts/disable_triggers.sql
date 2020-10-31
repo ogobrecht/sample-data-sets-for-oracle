@@ -22,8 +22,8 @@ The first parameter of the script can contain a JSON object with two keys:
 Examples
 --------
 
-    @disable_triggers.sql "{ table_filter: '%',       dry_run: false }"
-    @disable_triggers.sql "{ table_filter: 'CO\_%',   dry_run: true  }"
+    @disable_triggers.sql "{ table_filter: '%',     dry_run: false }"
+    @disable_triggers.sql "{ table_filter: 'CO\_%', dry_run: true  }"
 
 Meta
 ----

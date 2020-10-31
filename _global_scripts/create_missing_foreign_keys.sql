@@ -28,8 +28,8 @@ The first parameter of the script can contain a JSON object with two keys:
 Examples
 --------
 
-    @create_missing_foreign_keys.sql "{ table_filter: '%',       dry_run: false }"
-    @create_missing_foreign_keys.sql "{ table_filter: 'CO\_%',   dry_run: true  }"
+    @create_missing_foreign_keys.sql "{ table_filter: '%',     dry_run: false }"
+    @create_missing_foreign_keys.sql "{ table_filter: 'CO\_%', dry_run: true  }"
 
 Meta
 ----

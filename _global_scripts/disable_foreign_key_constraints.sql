@@ -20,8 +20,8 @@ The first parameter of the script can contain a JSON object with two keys:
 Examples
 --------
 
-    @disable_all_foreign_key_constraints.sql "{ table_filter: '%',       dry_run: false }"
-    @disable_all_foreign_key_constraints.sql "{ table_filter: 'CO\_%',   dry_run: true  }"
+    @disable_all_foreign_key_constraints.sql "{ table_filter: '%',     dry_run: false }"
+    @disable_all_foreign_key_constraints.sql "{ table_filter: 'CO\_%', dry_run: true  }"
 
 Meta
 ----
