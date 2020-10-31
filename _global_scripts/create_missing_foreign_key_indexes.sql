@@ -13,30 +13,29 @@ position in the index.
 
 Example index names:
 
-- `OEHR_EMPLOYEES_C7_FK_IX`
-- `OEHR_EMPLOYEES_C10_FK_IX`
-- `OEHR_EMPLOYEES_C11_FK_IX`
+    OEHR_EMPLOYEES_C7_FK_IX
+    OEHR_EMPLOYEES_C10_FK_IX
+    OEHR_EMPLOYEES_C11_FK_IX
 
 Options
 -------
 
 The first parameter of the script can contain a JSON object with two keys:
 
-- table_prefix:
-  - If null: Takes all tables of current schema into account
-  - If not null: Use the given prefix to filter tables
-  - Example: "CO" will be expanded to `table_name like 'CO\_%' escape '\'`
+- table_filter:
+  - A like expression (escape char is '\')
+  - Example: 'CO\_%' will be expanded to table_name like 'CO\_%' escape '\'
+  - If omitted, it will default to '%' (matches all tables)
 - dry_run:
-  - If true, the script will do the intended work
-  - If false, the script will only report the intended work and do nothing
-  - If omitted, it will default to false
+  - If true, the script will only report the intended work and do nothing
+  - If false, the script will do the intended work
+  - If omitted, it will default to true
 
-Usage
------
-- `@create_missing_foreign_key_indexes.sql '{ table_prefix: "",     dry_run: false }'` (all tables, do the intended work)
-- `@create_missing_foreign_key_indexes.sql '{ table_prefix: "",     dry_run: true  }'` (all tables, report only)
-- `@create_missing_foreign_key_indexes.sql '{ table_prefix: "OEHR", dry_run: false }'` (only for tables prefixed with "OEHR")
-- `@create_missing_foreign_key_indexes.sql '{ table_prefix: "CO",   dry_run: true  }'` (only for tables prefixed with "CO", report only)
+Examples
+--------
+
+    @create_missing_foreign_key_indexes.sql "{ table_filter: '%',       dry_run: false }"
+    @create_missing_foreign_key_indexes.sql "{ table_filter: 'CO\_%',   dry_run: true  }"
 
 Meta
 ----
@@ -47,21 +46,21 @@ Meta
 */
 
 prompt CREATE MISSING FOREIGN KEY INDEXES
-set define on serveroutput on verify off feedback off
+set define on serveroutput on verify off feedback off linesize 120
 variable options       varchar2(4000)
-variable table_prefix  varchar2(100)
+variable table_filter  varchar2(100)
 variable dry_run       varchar2(100)
 
 declare
   v_count pls_integer := 0;
 begin
-  :options      := '&1';
-  :table_prefix := json_value(:options, '$.table_prefix');
-  :dry_run      := nvl(json_value(:options, '$.dry_run'), 'false');
-  if :table_prefix is not null then
-    dbms_output.put_line('- for tables prefixed with "' || :table_prefix || '_"');
-  else
+  :options      := q'[&1]';
+  :table_filter := nvl(json_value(:options, '$.table_filter'), '%');
+  :dry_run      := nvl(json_value(:options, '$.dry_run'), 'true');
+  if :table_filter = '%' then
     dbms_output.put_line('- for all tables');
+  else
+    dbms_output.put_line('- for tables like ''' || :table_filter || '''');
   end if;
   if :dry_run = 'true' then
     dbms_output.put_line('- dry run entered');
@@ -80,7 +79,7 @@ with needed_indexes as (
   where
     constraint_type = 'R'
     and uc.table_name not like 'BIN$%'
-    and uc.table_name like case when :table_prefix is not null then :table_prefix || '\_%' else '%' end escape '\'
+    and uc.table_name like :table_filter escape '\'
   group by
     uc.table_name,
     uc.constraint_name
@@ -94,7 +93,7 @@ existing_indexes as (
     user_ind_columns
   where
     table_name not like 'BIN$%'
-    and table_name like case when :table_prefix is not null then :table_prefix || '\_%' else '%' end escape '\'
+    and table_name like :table_filter escape '\'
   group by
     table_name,
     index_name

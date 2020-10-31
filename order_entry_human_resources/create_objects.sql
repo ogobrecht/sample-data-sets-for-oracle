@@ -54,6 +54,6 @@ create index oehr_temp_name_10_ix on oehr_product_information  (supplier_id);
 
 @views/oehr_emp_details_view.sql
 
-@../_global_scripts/create_missing_foreign_key_indexes.sql '{ table_prefix: "OEHR", dry_run: false }'
-@../_global_scripts/unify_index_names.sql                  '{ table_prefix: "OEHR", dry_run: false }'
-@../_global_scripts/unify_constraint_names.sql             '{ table_prefix: "OEHR", dry_run: false }'
+@../_global_scripts/create_missing_foreign_key_indexes.sql "{ table_filter: 'OEHR_%', dry_run: false }"
+@../_global_scripts/unify_index_names.sql                  "{ table_filter: 'OEHR_%', dry_run: false }"
+@../_global_scripts/unify_constraint_names.sql             "{ table_filter: 'OEHR_%', dry_run: false }"
