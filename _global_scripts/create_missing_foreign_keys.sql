@@ -14,49 +14,47 @@ This script is new and not heavily tested. It will currently only work with a go
 Options
 -------
 
-The first parameter of the script can contain a JSON object with two keys:
+The first parameter of the script can contain two options:
 
 - table_filter:
   - A like expression (escape char is '\')
-  - Example: 'CO\_%' will be expanded to table_name like 'CO\_%' escape '\'
+  - Example: `table_filter=CO\_%` will be expanded to `table_name like 'CO\_%' escape '\'`
   - If omitted, it will default to '%' (matches all tables)
 - dry_run:
-  - If true, the script will only report the intended work and do nothing
-  - If false, the script will do the intended work
+  - `dry_run=true` will only report the intended work and do nothing
+  - `dry_run=false` will do the intended work
   - If omitted, it will default to true
 
 Examples
 --------
 
-    @create_missing_foreign_keys.sql "{ table_filter: '%',     dry_run: false }"
-    @create_missing_foreign_keys.sql "{ table_filter: 'CO\_%', dry_run: true  }"
+    @create_missing_foreign_keys.sql "table_filter=%  dry_run=true"
+    @create_missing_foreign_keys.sql "table_filter=CO\_%  dry_run=false"
 
 Meta
 ----
 - Author: [Ottmar Gobrecht](https://ogobrecht.github.io)
 - Script: [create_missing_foreign_keys.sql …](https://github.com/ogobrecht/oracle-sql-scripts/blob/master/scripts/)
-- Last Update: 2020-10-29
+- Last Update: 2020-11-01
 
 */
 
 prompt CREATE MISSING FOREIGN KEYS
 set define on serveroutput on verify off feedback off linesize 120
-variable options       varchar2(4000)
-variable table_filter  varchar2(100)
-variable dry_run       varchar2(100)
 
 declare
-  v_count pls_integer := 0;
+  v_table_filter varchar2(100);
+  v_dry_run      varchar2(100);
+  v_count        pls_integer := 0;
 begin
-  :options      := q'[&1]';
-  :table_filter := nvl(json_value(:options, '$.table_filter'), '%');
-  :dry_run      := nvl(json_value(:options, '$.dry_run'), 'true');
-  if :table_filter = '%' then
+  v_table_filter := nvl(regexp_substr('&1','table_filter=([^ ]*)',1,1,'i',1), '%');
+  v_dry_run := nvl(lower(regexp_substr('&1','dry_run=(true|false)',1,1,'i',1)), 'true');
+  if v_table_filter = '%' then
     dbms_output.put_line('- for all tables');
   else
-    dbms_output.put_line('- for tables like ''' || :table_filter || '''');
+    dbms_output.put_line('- for tables like ''' || v_table_filter || '''');
   end if;
-  if :dry_run = 'true' then
+  if v_dry_run = 'true' then
     dbms_output.put_line('- dry run entered');
   end if;
   for i in (
@@ -71,7 +69,7 @@ with primary_keys as (
   where
     uc.constraint_type = 'P'
     and uc.table_name not like 'BIN$%'
-    and uc.table_name like :table_filter escape '\'
+    and uc.table_name like v_table_filter escape '\'
     /* Without the following filter we would find too many matches with bad data models (without a column prefix).
     For example when you have logger installed which uses `id` as pk and your fk columns ends all with `_id`.
     We explicitly do not filter for pks ending with `_id` to support also natural keys like for example
@@ -94,7 +92,7 @@ existing_foreign_keys as (
   where
     uc.constraint_type = 'R'
     and uc.table_name not like 'BIN$%'
-    and uc.table_name like :table_filter escape '\'
+    and uc.table_name like v_table_filter escape '\'
 ) --select * from existing_foreign_keys;
 ,
 potential_foreign_keys as (
@@ -109,7 +107,7 @@ potential_foreign_keys as (
     join primary_keys   pk on utc.column_name like '%\_' || pk.column_name escape '\'
   where
     ut.table_name not like 'BIN$%'
-    and ut.table_name like :table_filter escape '\'
+    and ut.table_name like v_table_filter escape '\'
 ) --select * from potential_foreign_keys;
 ,
 missing_foreign_keys as (
@@ -125,7 +123,7 @@ from
 --------------------------------------------------------------------------------
   ) loop
     dbms_output.put_line('- ' || i.ddl);
-    if :dry_run = 'false' then
+    if v_dry_run = 'false' then
       execute immediate i.ddl;
     end if;
     v_count := v_count + 1;
@@ -133,6 +131,6 @@ from
 
   dbms_output.put_line('- ' || v_count || ' foreign key'
     || case when v_count != 1 then 's' end || ' '
-    || case when :dry_run = 'false' then 'created' else 'reported' end);
+    || case when v_dry_run = 'false' then 'created' else 'reported' end);
 end;
 /

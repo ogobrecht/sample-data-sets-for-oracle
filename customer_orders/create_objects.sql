@@ -20,6 +20,6 @@ create index co_customers_name_ix     on co_customers (full_name);
 @views/co_store_orders_status.sql
 @views/co_store_orders.sql
 
-@../_global_scripts/create_missing_foreign_key_indexes.sql "{ table_filter: 'CO_%', dry_run: false }"
-@../_global_scripts/unify_index_names.sql                  "{ table_filter: 'CO_%', dry_run: false }"
-@../_global_scripts/unify_constraint_names.sql             "{ table_filter: 'CO_%', dry_run: false }"
+@../_global_scripts/create_missing_foreign_key_indexes.sql "table_filter=CO\_%  dry_run=false"
+@../_global_scripts/unify_index_names.sql                  "table_filter=CO\_%  dry_run=false"
+@../_global_scripts/unify_constraint_names.sql             "table_filter=CO\_%  dry_run=false"

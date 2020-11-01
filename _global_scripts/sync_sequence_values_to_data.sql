@@ -10,57 +10,56 @@ value or in a trigger).
 Options
 -------
 
-The first parameter of the script can contain a JSON object with two keys:
+The first parameter of the script can contain two options:
 
 - table_filter:
   - A like expression (escape char is '\')
-  - Example: 'CO\_%' will be expanded to table_name like 'CO\_%' escape '\'
+  - Example: `table_filter=CO\_%` will be expanded to `table_name like 'CO\_%' escape '\'`
   - If omitted, it will default to '%' (matches all tables)
 - dry_run:
-  - If true, the script will only report the intended work and do nothing
-  - If false, the script will do the intended work
+  - `dry_run=true` will only report the intended work and do nothing
+  - `dry_run=false` will do the intended work
   - If omitted, it will default to true
 
 Examples
 --------
 
-    @sync_sequence_values_to_data.sql "{ table_filter: '%',     dry_run: false }"
-    @sync_sequence_values_to_data.sql "{ table_filter: 'CO\_%', dry_run: true  }"
+    @sync_sequence_values_to_data.sql "table_filter=%  dry_run=true"
+    @sync_sequence_values_to_data.sql "table_filter=CO\_%  dry_run=false"
 
 Meta
 ----
 - Author: [Ottmar Gobrecht](https://ogobrecht.github.io)
 - Script: [sync_sequence_values_to_data.sql …](https://github.com/ogobrecht/oracle-sql-scripts/blob/master/scripts/)
-- Last Update: 2020-10-29
+- Last Update: 2020-11-01
 - Inspiration: https://stackoverflow.com/questions/51470/how-do-i-reset-a-sequence-in-oracle
 
 */
 
 prompt SYNC SEQUENCE VALUES TO DATA
 set define on serveroutput on verify off feedback off linesize 120
-variable options       varchar2(4000)
-variable table_filter  varchar2(100)
-variable dry_run       varchar2(100)
 
 declare
-  v_ddl        varchar2(4000);
-  v_nextval    pls_integer;
-  v_dataval    pls_integer;
-  v_difference pls_integer;
+  v_table_filter   varchar2(100);
+  v_dry_run        varchar2(100);
+  v_count          pls_integer := 0;
+  v_ddl            varchar2(4000);
+  v_nextval        pls_integer;
+  v_dataval        pls_integer;
+  v_difference     pls_integer;
   v_count_skipped  pls_integer := 0;
   v_count_identity pls_integer := 0;
   v_count_default  pls_integer := 0;
   v_count_trigger  pls_integer := 0;
 begin
-  :options      := q'[&1]';
-  :table_filter := nvl(json_value(:options, '$.table_filter'), '%');
-  :dry_run      := nvl(json_value(:options, '$.dry_run'), 'true');
-  if :table_filter = '%' then
+  v_table_filter := nvl(regexp_substr('&1','table_filter=([^ ]*)',1,1,'i',1), '%');
+  v_dry_run := nvl(lower(regexp_substr('&1','dry_run=(true|false)',1,1,'i',1)), 'true');
+  if v_table_filter = '%' then
     dbms_output.put_line('- for all tables');
   else
-    dbms_output.put_line('- for tables like ''' || :table_filter || '''');
+    dbms_output.put_line('- for tables like ''' || v_table_filter || '''');
   end if;
-  if :dry_run = 'true' then
+  if v_dry_run = 'true' then
     dbms_output.put_line('- dry run entered');
   end if;
   for i in (
@@ -180,12 +179,12 @@ from
   natural join user_tab_cols
   natural join user_sequences
 where
-  table_name like :table_filter escape '\'
+  table_name like v_table_filter escape '\'
 --------------------------------------------------------------------------------
   ) loop
     dbms_output.put_line('- tab:' || i.table_name || ' col:' || i.column_name
       || ' seq:' || i.sequence_name || ' typ:' || i.source_type);
-    if :dry_run = 'true' then
+    if v_dry_run = 'true' then
       case i.source_type
         when 'IDENTITY_COLUMN'     then v_count_identity := v_count_identity + 1;
         when 'COLUMN_DATA_DEFAULT' then v_count_default  := v_count_default  + 1;
@@ -242,20 +241,20 @@ where
     dbms_output.put_line('- ' || v_count_identity
       || ' implicit sequence' || case when v_count_identity != 1 then 's' end
       || ' (from identity columns) '
-      || case when :dry_run = 'false' then 'synced to data' else 'reported' end);
+      || case when v_dry_run = 'false' then 'synced to data' else 'reported' end);
   end if;
   if v_count_default != 0 then
     dbms_output.put_line('- ' || v_count_default
       || ' explicit sequence' || case when v_count_default != 1 then 's' end
       || ' (from column data defaults) '
-      || case when :dry_run = 'false' then 'synced to data' else 'reported' end);
+      || case when v_dry_run = 'false' then 'synced to data' else 'reported' end);
 
   end if;
   if v_count_trigger != 0 then
     dbms_output.put_line('- ' || v_count_trigger
       || ' explicit sequence' || case when v_count_trigger != 1 then 's' end
       || ' (from trigger sources) '
-      || case when :dry_run = 'false' then 'synced to data' else 'reported' end);
+      || case when v_dry_run = 'false' then 'synced to data' else 'reported' end);
   end if;
 end;
 /

@@ -20,49 +20,47 @@ Example index names:
 Options
 -------
 
-The first parameter of the script can contain a JSON object with two keys:
+The first parameter of the script can contain two options:
 
 - table_filter:
   - A like expression (escape char is '\')
-  - Example: 'CO\_%' will be expanded to table_name like 'CO\_%' escape '\'
+  - Example: `table_filter=CO\_%` will be expanded to `table_name like 'CO\_%' escape '\'`
   - If omitted, it will default to '%' (matches all tables)
 - dry_run:
-  - If true, the script will only report the intended work and do nothing
-  - If false, the script will do the intended work
+  - `dry_run=true` will only report the intended work and do nothing
+  - `dry_run=false` will do the intended work
   - If omitted, it will default to true
 
 Examples
 --------
 
-    @create_missing_foreign_key_indexes.sql "{ table_filter: '%',     dry_run: false }"
-    @create_missing_foreign_key_indexes.sql "{ table_filter: 'CO\_%', dry_run: true  }"
+    @create_missing_foreign_key_indexes.sql "table_filter=%  dry_run=true"
+    @create_missing_foreign_key_indexes.sql "table_filter=CO\_%  dry_run=false"
 
 Meta
 ----
 - Author: [Ottmar Gobrecht](https://ogobrecht.github.io)
 - Script: [create_missing_foreign_key_indexes.sql …](https://github.com/ogobrecht/oracle-sql-scripts/blob/master/scripts/)
-- Last Update: 2020-10-29
+- Last Update: 2020-11-01
 
 */
 
 prompt CREATE MISSING FOREIGN KEY INDEXES
 set define on serveroutput on verify off feedback off linesize 120
-variable options       varchar2(4000)
-variable table_filter  varchar2(100)
-variable dry_run       varchar2(100)
 
 declare
-  v_count pls_integer := 0;
+  v_table_filter varchar2(100);
+  v_dry_run      varchar2(100);
+  v_count        pls_integer := 0;
 begin
-  :options      := q'[&1]';
-  :table_filter := nvl(json_value(:options, '$.table_filter'), '%');
-  :dry_run      := nvl(json_value(:options, '$.dry_run'), 'true');
-  if :table_filter = '%' then
+  v_table_filter := nvl(regexp_substr('&1','table_filter=([^ ]*)',1,1,'i',1), '%');
+  v_dry_run := nvl(lower(regexp_substr('&1','dry_run=(true|false)',1,1,'i',1)), 'true');
+  if v_table_filter = '%' then
     dbms_output.put_line('- for all tables');
   else
-    dbms_output.put_line('- for tables like ''' || :table_filter || '''');
+    dbms_output.put_line('- for tables like ''' || v_table_filter || '''');
   end if;
-  if :dry_run = 'true' then
+  if v_dry_run = 'true' then
     dbms_output.put_line('- dry run entered');
   end if;
   for i in (
@@ -79,7 +77,7 @@ with needed_indexes as (
   where
     constraint_type = 'R'
     and uc.table_name not like 'BIN$%'
-    and uc.table_name like :table_filter escape '\'
+    and uc.table_name like v_table_filter escape '\'
   group by
     uc.table_name,
     uc.constraint_name
@@ -93,7 +91,7 @@ existing_indexes as (
     user_ind_columns
   where
     table_name not like 'BIN$%'
-    and table_name like :table_filter escape '\'
+    and table_name like v_table_filter escape '\'
   group by
     table_name,
     index_name
@@ -103,7 +101,7 @@ select
   n.column_list as needed_index_column,
   e.column_list as existing_index_column,
   case when e.column_list is null then
-    'create index ' || n.table_name || '_' || n.column_ids || '_fk_ix'
+    'create index ' || n.table_name || '_' || n.column_ids || '_FK_IX'
     || ' on ' || n.table_name || ' (' || n.column_list || ')'
   end as ddl
 from
@@ -114,7 +112,7 @@ where e.column_list is null
 --------------------------------------------------------------------------------
   ) loop
     dbms_output.put_line('- ' || i.ddl);
-    if :dry_run = 'false' then
+    if v_dry_run = 'false' then
       execute immediate i.ddl;
     end if;
     v_count := v_count + 1;
@@ -122,6 +120,6 @@ where e.column_list is null
 
   dbms_output.put_line('- ' || v_count || ' index'
     || case when v_count != 1 then 'es' end || ' '
-    || case when :dry_run = 'false' then 'created' else 'reported' end);
+    || case when v_dry_run = 'false' then 'created' else 'reported' end);
 end;
 /

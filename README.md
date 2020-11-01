@@ -32,11 +32,12 @@ For more info about the Oracle sample schemas see the [docs](https://docs.oracle
 
 ## List of Global Helper Scripts
 
-- Disable/enable all foreign key constraints
 - Create missing foreign key indexes
+- Disable/enable foreign key constraints
+- Disable/enable triggers
+- Sync sequence values to data
 - Unify constraint names
 - Unify index names
-- Sync sequence values to data
 
 Hope this helps someone else...
 

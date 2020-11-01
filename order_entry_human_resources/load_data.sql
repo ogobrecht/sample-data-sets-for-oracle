@@ -16,5 +16,5 @@ prompt LOAD DATA
 @data/oehr_regions.sql
 @data/oehr_warehouses.sql
 
-@../_global_scripts/enable_foreign_key_constraints.sql "{ table_filter: 'OEHR_%', dry_run: false }"
-@../_global_scripts/sync_sequence_values_to_data.sql   "{ table_filter: 'OEHR_%', dry_run: false }"
+@../_global_scripts/enable_foreign_key_constraints.sql "table_filter=OEHR\_%  dry_run=false"
+@../_global_scripts/sync_sequence_values_to_data.sql   "table_filter=OEHR\_%  dry_run=false"
