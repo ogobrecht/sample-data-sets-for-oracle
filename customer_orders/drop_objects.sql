@@ -29,5 +29,8 @@ drop table co_orders cascade constraints purge;
 prompt - table co_products
 drop table co_products cascade constraints purge;
 
+prompt - table co_shipments
+drop table co_shipments  cascade constraints purge;
+
 prompt - table co_stores
 drop table co_stores cascade constraints purge;

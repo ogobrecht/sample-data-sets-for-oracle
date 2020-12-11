@@ -4,6 +4,7 @@ prompt LOAD DATA
 @data/co_order_items.sql
 @data/co_orders.sql
 @data/co_products.sql
+@data/co_shipments.sql
 @data/co_stores.sql
 
 prompt - commit work

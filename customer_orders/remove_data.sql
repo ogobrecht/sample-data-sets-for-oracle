@@ -14,5 +14,8 @@ truncate table co_orders;
 prompt - truncate table co_products
 truncate table co_products;
 
+prompt - truncate table co_shipments
+truncate table co_shipments;
+
 prompt - truncate table co_stores
 truncate table co_stores;
