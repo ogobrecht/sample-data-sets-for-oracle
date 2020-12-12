@@ -1,6 +1,7 @@
 prompt LOAD DATA
 
 @data/co_customers.sql
+@data/co_inventory.sql
 @data/co_order_items.sql
 @data/co_orders.sql
 @data/co_products.sql

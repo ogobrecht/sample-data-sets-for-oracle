@@ -6,6 +6,7 @@ create table co_order_items (
   product_id   integer      not null,
   unit_price   number(10,2) not null,
   quantity     integer      not null,
+  shipment_id  integer      ,
   --
   primary key  (order_id, line_item_id),
   unique       (product_id, order_id)
@@ -28,3 +29,6 @@ comment on column co_order_items.unit_price is
 
 comment on column co_order_items.quantity is
   'How many items of this product the customer purchased';
+
+comment on column co_order_items.shipment_id is
+  'Where this product will be delivered';

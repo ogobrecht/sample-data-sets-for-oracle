@@ -20,6 +20,9 @@ drop view co_store_orders;
 prompt - table co_customers
 drop table co_customers cascade constraints purge;
 
+prompt - table co_inventory
+drop table co_inventory cascade constraints purge;
+
 prompt - table co_order_items
 drop table co_order_items cascade constraints purge;
 
