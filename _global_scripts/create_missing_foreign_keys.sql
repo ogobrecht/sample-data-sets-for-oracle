@@ -33,14 +33,14 @@ The first parameter of the script can contain four options:
   - Example: `my_tab_1:col3:my_target_tab1,MY_TAB_2:COL3:MY_TARGET_TAB2`
   - This can be useful in rare cases to suppress false positives (I was not able to find another way without losing correct candidates or blow up the number of false positives)
   - If omitted, it will default to 'no_list_entries' (which results in no filtered potential foreign keys)
-- dry_run:
-  - `dry_run=true` will only report the intended work and do nothing
-  - `dry_run=false` will do the intended work
-  - If omitted, it will default to true
 - disable:
   - `disable=true` will create a disabled constraint
   - `disable=false` will create a enabled constraint
   - If omitted, it will default to false
+- dry_run:
+  - `dry_run=true` will only report the intended work and do nothing
+  - `dry_run=false` will do the intended work
+  - If omitted, it will default to true
 
 Examples
 --------
@@ -64,8 +64,9 @@ set define on serveroutput on verify off feedback off linesize 120
 
 declare
   v_table_prefix varchar2(100);
+  v_table_filter varchar2(100);
   v_exclude_list varchar2(1000);
-  v_disable     varchar2(100);
+  v_disable      varchar2(100);
   v_dry_run      varchar2(100);
   v_count        pls_integer := 0;
 begin
@@ -75,9 +76,10 @@ begin
   v_dry_run      := nvl(lower(regexp_substr('&1','dry_run=(true|false)',1,1,'i',1)), 'true');
   if v_table_prefix is null then
     dbms_output.put_line('- for all tables');
+    v_table_filter := '%';
   else
     dbms_output.put_line('- for tables prefixed with ''' || v_table_prefix || '''');
-    v_table_prefix := v_table_prefix || '\_';
+    v_table_filter := v_table_prefix || '\_%';
   end if;
   if v_dry_run = 'true' then
     dbms_output.put_line('- dry run entered');
@@ -94,7 +96,7 @@ with primary_keys as (
       on uc.constraint_name = ucc.constraint_name
    where uc.constraint_type = 'P'
      and uc.table_name not like 'BIN$%'
-     and uc.table_name like v_table_prefix || '%' escape '\'
+     and uc.table_name like v_table_filter escape '\'
 ) --select * from primary_keys;
 ,
 existing_foreign_keys as (
@@ -111,7 +113,7 @@ existing_foreign_keys as (
   where
     uc.constraint_type = 'R'
     and uc.table_name not like 'BIN$%'
-    and uc.table_name like v_table_prefix || '%' escape '\'
+    and uc.table_name like v_table_filter escape '\'
 ) --select * from existing_foreign_keys;
 ,
 potential_foreign_keys as (
@@ -129,7 +131,7 @@ potential_foreign_keys as (
                                 -----------------------------------------------------------------------------------------
                                 or
                                 --column-names-without-prefixes-and-table-names-with-prefix------------------------------
-                                'CO' || '_' || utc.column_name like '%' || pk.combined_name
+                                v_table_prefix || '_' || utc.column_name like '%' || pk.combined_name
                                 -----------------------------------------------------------------------------------------
                                 or
                                 --column-names-with-prefixes-------------------------------------------------------------
@@ -147,8 +149,14 @@ potential_foreign_keys as (
 
   where
     ut.table_name not like 'BIN$%'
-    and ut.table_name like v_table_prefix || '%' escape '\'
-    and pk.number_columns = 1 -- filter out multi column pk's as target
+    and ut.table_name like v_table_filter escape '\'
+    --> filter out multi column pk's as target
+    and pk.number_columns = 1
+    --> filter out source columns which are single column primary keys
+    and not exists (select 1 from primary_keys t
+                     where t.number_columns = 1
+                       and t.table_name = utc.table_name
+                       and t.column_name = utc.column_name)
 ) --select * from potential_foreign_keys;
 ,
 missing_foreign_keys as (
