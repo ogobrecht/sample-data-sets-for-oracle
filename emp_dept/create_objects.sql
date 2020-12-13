@@ -9,6 +9,6 @@ alter table ed_emp modify mgr    references ed_emp  disable;
 
 @views/ed_emp_dept_v.sql
 
-@../_global_scripts/create_missing_foreign_key_indexes.sql "table_filter=ED\_%  dry_run=false"
-@../_global_scripts/unify_index_names.sql                  "table_filter=ED\_%  dry_run=false"
-@../_global_scripts/unify_constraint_names.sql             "table_filter=ED\_%  dry_run=false"
+@../_global_scripts/create_missing_foreign_key_indexes.sql "table_prefix=ed  dry_run=false"
+@../_global_scripts/unify_index_names.sql                  "table_prefix=ed  dry_run=false"
+@../_global_scripts/unify_constraint_names.sql             "table_prefix=ed  dry_run=false"

@@ -11,7 +11,6 @@ prompt CREATE OBJECTS
 @tables/drs_customer.sql
 @tables/drs_film_actor.sql
 @tables/drs_film_category.sql
-@tables/drs_film_text.sql
 @tables/drs_film.sql
 @tables/drs_inventory.sql
 @tables/drs_language.sql
@@ -35,30 +34,6 @@ prompt CREATE OBJECTS
 @triggers/drs_rental_biu.sql
 @triggers/drs_staff_biu.sql
 @triggers/drs_store_biu.sql
-
-prompt - 22 referential constraints (disabled)
-alter table drs_address       modify city_id              references drs_city                         disable;
-alter table drs_city          modify country_id           references drs_country                      disable;
-alter table drs_customer      modify address_id           references drs_address                      disable;
-alter table drs_customer      modify store_id             references drs_store                        disable;
-alter table drs_film          modify language_id          references drs_language                     disable;
-alter table drs_film          modify original_language_id references drs_language                     disable;
-alter table drs_film_actor    modify actor_id             references drs_actor                        disable;
-alter table drs_film_actor    modify film_id              references drs_film                         disable;
-alter table drs_film_category modify category_id          references drs_category                     disable;
-alter table drs_film_category modify film_id              references drs_film                         disable;
-alter table drs_inventory     modify film_id              references drs_film                         disable;
-alter table drs_inventory     modify store_id             references drs_store                        disable;
-alter table drs_payment       modify customer_id          references drs_customer                     disable;
-alter table drs_payment       modify rental_id            references drs_rental    on delete set null disable;
-alter table drs_payment       modify staff_id             references drs_staff                        disable;
-alter table drs_rental        modify customer_id          references drs_customer                     disable;
-alter table drs_rental        modify inventory_id         references drs_inventory                    disable;
-alter table drs_rental        modify staff_id             references drs_staff                        disable;
-alter table drs_staff         modify address_id           references drs_address                      disable;
-alter table drs_staff         modify store_id             references drs_store                        disable;
-alter table drs_store         modify address_id           references drs_address                      disable;
-alter table drs_store         modify manager_staff_id     references drs_staff                        disable;
 
 prompt - 3 indexes (fk indexes are created later automatically)
 create index drs_temp_name_01_ix on drs_actor     (last_name);
@@ -89,6 +64,11 @@ create index drs_temp_name_03_ix on drs_inventory (store_id, film_id);
 @packages/drs_customers.pkb
 @packages/drs_rentals.pkb
 
-@../_global_scripts/create_missing_foreign_key_indexes.sql "table_filter=DRS\_%  dry_run=false"
-@../_global_scripts/unify_index_names.sql                  "table_filter=DRS\_%  dry_run=false"
-@../_global_scripts/unify_constraint_names.sql             "table_filter=DRS\_%  dry_run=false"
+@../_global_scripts/create_missing_foreign_keys.sql        "table_prefix=drs  dry_run=false  disable=true  on_delete_set_null_list=drs_payment:rental_id:drs_rental"
+@../_global_scripts/create_missing_foreign_key_indexes.sql "table_prefix=drs  dry_run=false"
+@../_global_scripts/unify_index_names.sql                  "table_prefix=drs  dry_run=false"
+@../_global_scripts/unify_constraint_names.sql             "table_prefix=drs  dry_run=false"
+
+
+
+@../_global_scripts/create_missing_foreign_keys.sql        "table_prefix=drs  dry_run=true  disable=true  on_delete_set_null_list=drs_payment:rental_id:drs_rental"

@@ -8,8 +8,5 @@ prompt LOAD DATA
 @data/co_shipments.sql
 @data/co_stores.sql
 
-prompt - commit work
-commit;
-
-@../_global_scripts/enable_foreign_key_constraints.sql "table_filter=CO\_%  dry_run=false"
-@../_global_scripts/sync_sequence_values_to_data.sql   "table_filter=CO\_%  dry_run=false"
+@../_global_scripts/enable_foreign_key_constraints.sql "table_prefix=co  dry_run=false"
+@../_global_scripts/sync_sequence_values_to_data.sql   "table_prefix=co  dry_run=false"

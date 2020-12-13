@@ -1,4 +1,4 @@
-@../_global_scripts/disable_foreign_key_constraints.sql "table_filter=DRS\_%  dry_run=false"
+@../_global_scripts/disable_foreign_key_constraints.sql "table_prefix=drs  dry_run=false"
 
 prompt REMOVE DATA
 
@@ -25,9 +25,6 @@ truncate table drs_film_actor;
 
 prompt - truncate table drs_film_category
 truncate table drs_film_category;
-
-prompt - truncate table drs_film_text
-truncate table drs_film_text;
 
 prompt - truncate table drs_film
 truncate table drs_film;

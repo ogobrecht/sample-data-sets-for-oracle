@@ -1,4 +1,4 @@
-@../_global_scripts/disable_foreign_key_constraints.sql "table_filter=DRS\_%  dry_run=false"
+@../_global_scripts/disable_foreign_key_constraints.sql "table_prefix=drs  dry_run=false"
 
 prompt DROP OBJECTS
 
@@ -67,8 +67,6 @@ prompt - table drs_film_actor
 drop table drs_film_actor cascade constraints purge;
 prompt - table drs_film_category
 drop table drs_film_category cascade constraints purge;
-prompt - table drs_film_text
-drop table drs_film_text cascade constraints purge;
 prompt - table drs_film
 drop table drs_film cascade constraints purge;
 prompt - table drs_inventory
