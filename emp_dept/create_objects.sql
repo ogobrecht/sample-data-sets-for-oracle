@@ -4,6 +4,7 @@ prompt CREATE OBJECTS
 @tables/ed_emp.sql
 
 prompt - 2 referential constraints (disabled)
+-- this data model has no clean naming conventions - automatic foreign key generation will only work partially
 alter table ed_emp modify deptno references ed_dept disable;
 alter table ed_emp modify mgr    references ed_emp  disable;
 

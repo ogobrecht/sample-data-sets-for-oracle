@@ -20,6 +20,7 @@ prompt CREATE OBJECTS
 @triggers/oehr_update_job_history.sql
 
 prompt - 19 referential constraints (disabled)
+-- this data model has no clean naming conventions - automatic foreign key generation will only work partially
 alter table oehr_countries            modify region_id      references oehr_regions                                 disable;
 alter table oehr_customers            modify account_mgr_id references oehr_employees                               disable;
 alter table oehr_departments          modify location_id    references oehr_locations                               disable;
