@@ -26,7 +26,7 @@ Meta
 ----
 - Author: [Ottmar Gobrecht](https://ogobrecht.github.io)
 - Script: [compile_and_check_objects.sql …](https://github.com/ogobrecht/oracle-sql-scripts/blob/master/scripts/)
-- Last Update: 2020-11-01
+- Last Update: 2020-12-12
 
 */
 

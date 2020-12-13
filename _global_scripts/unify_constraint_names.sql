@@ -51,7 +51,7 @@ Meta
 ----
 - Author: [Ottmar Gobrecht](https://ogobrecht.github.io)
 - Script: [unify_constraint_names.sql …](https://github.com/ogobrecht/oracle-sql-scripts/blob/master/scripts/)
-- Last Update: 2020-11-01
+- Last Update: 2020-12-12
 
 */
 
