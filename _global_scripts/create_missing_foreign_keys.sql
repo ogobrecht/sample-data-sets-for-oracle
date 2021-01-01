@@ -1,7 +1,7 @@
 /*
 
 Create Missing Foreign Keys
-===========================
+---------------------------
 
 This script is new and not heavily tested. It will currently only work with some naming conventions and restrictions:
 
@@ -18,8 +18,7 @@ This script is new and not heavily tested. It will currently only work with some
 - Does not support multi column primary keys as a target of a foreign key (a standard n:m mapping table with a multi column pk is normally only the source of two or more foreign keys and should work)
 - Does not provide an on delete clause - if you need to define one, please create the foreign key by yourself
 
-Options
--------
+OPTIONS
 
 The first parameter of the script can contain four options:
 
@@ -52,8 +51,7 @@ The first parameter of the script can contain four options:
   - `dry_run=false` will do the intended work
   - If omitted, it will default to true
 
-Examples
---------
+EXAMPLES
 
     @create_missing_foreign_keys.sql ""
     @create_missing_foreign_keys.sql "dry_run=true"
@@ -62,11 +60,11 @@ Examples
     @create_missing_foreign_keys.sql "table_prefix=CO  dry_run=false  exclude_list=my_tab_1:col3:my_target_tab1,MY_TAB_2:COL3:MY_TARGET_TAB2"
     @create_missing_foreign_keys.sql "table_prefix=co  dry_run=false  on_delete_set_null_list=my_tab_1:col3:my_target_tab1"
 
-Meta
-----
+META
+
 - Author: [Ottmar Gobrecht](https://ogobrecht.github.io)
-- Script: [create_missing_foreign_keys.sql …](https://github.com/ogobrecht/oracle-sql-scripts/blob/master/scripts/)
-- Last Update: 2020-12-12
+- Script: [create_missing_foreign_keys.sql …](https://github.com/ogobrecht/oracle-sql-scripts/)
+- Last Update: 2020-12-31
 
 */
 
@@ -108,8 +106,9 @@ begin
 with primary_keys as (
   select ucc.table_name,
          ucc.column_name,
-         regexp_replace(replace(ucc.table_name, 'IES', 'Y'), 'S$', '') || '_' || ucc.column_name as combined_name,
-         count(*) over (partition by ucc.table_name) as number_columns
+         regexp_replace(regexp_replace(replace(ucc.table_name, 'IES', 'Y'), 'S$', ''), '^'||v_table_prefix||'_', '') || '_' || ucc.column_name as combined_name,
+         count(*) over (partition by ucc.table_name) as number_columns,
+         case when instr(ucc.column_name, '_') > 0 then 'YES' else 'NO' end as column_name_contains_underscore
     from user_constraints uc
     join user_cons_columns ucc
       on uc.constraint_name = ucc.constraint_name
@@ -159,19 +158,15 @@ potential_foreign_keys as (
                                 utc.column_name like '%' || pk.combined_name
                                 -----------------------------------------------------------------------------------------
                                 or
-                                --column-names-without-prefixes-and-table-names-with-prefix------------------------------
-                                v_table_prefix || '_' || utc.column_name like '%' || pk.combined_name
-                                -----------------------------------------------------------------------------------------
-                                or
                                 --column-names-with-prefixes-------------------------------------------------------------
                                 utc.column_name like '%\_' || pk.column_name escape '\'
-                                and instr(pk.column_name, '_') > 0 --> no simple "id", at least something like "xxx_yy"
+                                and pk.column_name_contains_underscore = 'YES' --> no simple "id", at least something like "xxx_yy"
                                 -----------------------------------------------------------------------------------------
                                 or
                                 --column-names-equals-pk-column-name-with-prefixes---------------------------------------
                                 utc.column_name = pk.column_name
                                 and utc.table_name != pk.table_name
-                                and instr(pk.column_name, '_') > 0 --> no simple "id", at least something like "xxx_yy"
+                                and pk.column_name_contains_underscore = 'YES' --> no simple "id", at least something like "xxx_yy"
                                 -----------------------------------------------------------------------------------------
                               )
                               and instr(v_exclude_list, utc.table_name||':'||utc.column_name||':'||pk.table_name) = 0

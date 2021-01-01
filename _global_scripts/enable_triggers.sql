@@ -1,12 +1,11 @@
 /*
 
 Enable Triggers
-===============
+---------------
 
 For each table in the result set enable all triggers.
 
-Options
--------
+OPTIONS
 
 The first parameter of the script can contain two options:
 
@@ -19,17 +18,16 @@ The first parameter of the script can contain two options:
   - `dry_run=false` will do the intended work
   - If omitted, it will default to true
 
-Examples
---------
+EXAMPLES
 
     @enable_triggers.sql "dry_run=true"
     @enable_triggers.sql "table_prefix=co  dry_run=false"
 
-Meta
-----
+META
+
 - Author: [Ottmar Gobrecht](https://ogobrecht.github.io)
-- Script: [enable_triggers.sql …](https://github.com/ogobrecht/oracle-sql-scripts/blob/master/scripts/)
-- Last Update: 2020-12-12
+- Script: [enable_triggers.sql …](https://github.com/ogobrecht/oracle-sql-scripts/)
+- Last Update: 2020-12-31
 
 */
 

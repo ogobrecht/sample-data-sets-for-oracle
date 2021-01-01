@@ -1,7 +1,7 @@
 /*
 
 Unify Index Names
-=================
+-----------------
 
 Unify the names of indexes in the current schema to the following naming
 convention:
@@ -20,8 +20,7 @@ OEHR_EMPLOYEES_C4_UK_IX
 OEHR_EMPLOYEES_C3_C2_IX
 OEHR_EMPLOYEES_C11_FK_IX
 
-Options
--------
+OPTIONS
 
 The first parameter of the script can contain two options:
 
@@ -34,17 +33,16 @@ The first parameter of the script can contain two options:
   - `dry_run=false` will do the intended work
   - If omitted, it will default to true
 
-Examples
---------
+EXAMPLES
 
     @unify_index_names.sql "dry_run=true"
     @unify_index_names.sql "table_prefix=co  dry_run=false"
 
-Meta
-----
+META
+
 - Author: [Ottmar Gobrecht](https://ogobrecht.github.io)
-- Script: [unify_index_names.sql …](https://github.com/ogobrecht/oracle-sql-scripts/blob/master/scripts/)
-- Last Update: 2020-12-12
+- Script: [unify_index_names.sql …](https://github.com/ogobrecht/oracle-sql-scripts/)
+- Last Update: 2020-12-31
 
 */
 

@@ -1,7 +1,7 @@
 /*
 
 Unify Constraint Names
-======================
+----------------------
 
 Unify the names of table constraints in the current schema to the following
 naming convention:
@@ -27,8 +27,7 @@ like V (with check option, on a view) or O (with read only, on a view) can not
 be renamed and they are created implicitly with their base objects (as far as I
 know).
 
-Options
--------
+OPTIONS
 
 The first parameter of the script can contain two options:
 
@@ -41,17 +40,16 @@ The first parameter of the script can contain two options:
   - `dry_run=false` will do the intended work
   - If omitted, it will default to true
 
-Examples
---------
+EXAMPLES
 
     @unify_constraint_names.sql "dry_run=true"
     @unify_constraint_names.sql "table_prefix=co  dry_run=false"
 
-Meta
-----
+META
+
 - Author: [Ottmar Gobrecht](https://ogobrecht.github.io)
-- Script: [unify_constraint_names.sql …](https://github.com/ogobrecht/oracle-sql-scripts/blob/master/scripts/)
-- Last Update: 2020-12-12
+- Script: [unify_constraint_names.sql …](https://github.com/ogobrecht/oracle-sql-scripts/)
+- Last Update: 2020-12-31
 
 */
 

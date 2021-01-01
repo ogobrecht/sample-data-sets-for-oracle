@@ -1,9 +1,9 @@
 /*
 
 Create Missing Foreign Key Indexes
-==================================
+----------------------------------
 
-Missing indexes are created with the following naming convention:
+Missing indices are created with the following naming convention:
 
     <table_name>_<column_list>_FK_IX
 
@@ -17,8 +17,7 @@ Example index names:
     OEHR_EMPLOYEES_C10_FK_IX
     OEHR_EMPLOYEES_C11_FK_IX
 
-Options
--------
+OPTIONS
 
 The first parameter of the script can contain two options:
 
@@ -31,17 +30,16 @@ The first parameter of the script can contain two options:
   - `dry_run=false` will do the intended work
   - If omitted, it will default to true
 
-Examples
---------
+EXAMPLES
 
     @create_missing_foreign_key_indexes.sql "dry_run=true"
     @create_missing_foreign_key_indexes.sql "table_prefix=co  dry_run=false"
 
-Meta
-----
+META
+
 - Author: [Ottmar Gobrecht](https://ogobrecht.github.io)
-- Script: [create_missing_foreign_key_indexes.sql …](https://github.com/ogobrecht/oracle-sql-scripts/blob/master/scripts/)
-- Last Update: 2020-12-12
+- Script: [create_missing_foreign_key_indexes.sql …](https://github.com/ogobrecht/oracle-sql-scripts/)
+- Last Update: 2020-12-31
 
 */
 

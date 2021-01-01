@@ -1,12 +1,11 @@
 /*
 
 Compile and Check Objects
-=========================
+-------------------------
 
 Compile all invalid objects and check, if there are invalid objects left.
 
-Options
--------
+OPTIONS
 
 The first parameter of the script can contain one option:
 
@@ -15,18 +14,17 @@ The first parameter of the script can contain one option:
   - If false, the script will only report the invalid objects
   - If omitted, it will default to true
 
-Examples
---------
+EXAMPLES
 
     @compile_and_check_objects
     @compile_and_check_objects "throw_error=true"
     @compile_and_check_objects "throw_error=false"
 
-Meta
-----
+META
+
 - Author: [Ottmar Gobrecht](https://ogobrecht.github.io)
-- Script: [compile_and_check_objects.sql …](https://github.com/ogobrecht/oracle-sql-scripts/blob/master/scripts/)
-- Last Update: 2020-12-12
+- Script: [compile_and_check_objects.sql …](https://github.com/ogobrecht/oracle-sql-scripts/)
+- Last Update: 2020-12-31
 
 */
 

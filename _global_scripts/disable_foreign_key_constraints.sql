@@ -1,10 +1,9 @@
 /*
 
 Disable Foreign Key Constraints
-===============================
+-------------------------------
 
-Options
--------
+OPTIONS
 
 The first parameter of the script can contain two options:
 
@@ -17,17 +16,16 @@ The first parameter of the script can contain two options:
   - `dry_run=false` will do the intended work
   - If omitted, it will default to true
 
-Examples
---------
+EXAMPLES
 
     @disable_foreign_key_constraints.sql "dry_run=true"
     @disable_foreign_key_constraints.sql "table_prefix=co  dry_run=false"
 
-Meta
-----
+META
+
 - Author: [Ottmar Gobrecht](https://ogobrecht.github.io)
-- Script: [disable_foreign_key_constraints.sql …](https://github.com/ogobrecht/oracle-sql-scripts/blob/master/scripts/)
-- Last Update: 2020-12-12
+- Script: [disable_foreign_key_constraints.sql …](https://github.com/ogobrecht/oracle-sql-scripts/)
+- Last Update: 2020-12-31
 
 */
 
