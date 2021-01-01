@@ -19,7 +19,7 @@ You can install a single data set with the provided scripts in the data set subd
 1. `set NLS_LANG=AMERICAN_AMERICA.AL32UTF8`
 2. `cd customer_orders`
 3. `sqlplus user/password@connection_string`
-4. `@_install.sql` or `@_refresh_data.sql` or `@_uninstall.sql`
+4. `@_install` or `@_refresh_data` or `@_uninstall`
 
 ## List of Data Sets, Copyrights
 

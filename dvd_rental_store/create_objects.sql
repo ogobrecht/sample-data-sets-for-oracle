@@ -68,7 +68,3 @@ create index drs_temp_name_03_ix on drs_inventory (store_id, film_id);
 @../_global_scripts/create_missing_foreign_key_indexes.sql "table_prefix=drs  dry_run=false"
 @../_global_scripts/unify_index_names.sql                  "table_prefix=drs  dry_run=false"
 @../_global_scripts/unify_constraint_names.sql             "table_prefix=drs  dry_run=false"
-
-
-
-@../_global_scripts/create_missing_foreign_keys.sql        "table_prefix=drs  dry_run=true  disable=true  on_delete_set_null_list=drs_payment:rental_id:drs_rental"

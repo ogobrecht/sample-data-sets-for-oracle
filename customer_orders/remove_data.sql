@@ -5,6 +5,9 @@ prompt REMOVE DATA
 prompt - truncate table co_customers
 truncate table co_customers;
 
+prompt - truncate table co_inventory
+truncate table co_inventory;
+
 prompt - truncate table co_order_items
 truncate table co_order_items;
 

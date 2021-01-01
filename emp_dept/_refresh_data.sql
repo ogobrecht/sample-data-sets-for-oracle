@@ -1,4 +1,4 @@
-set define on serveroutput on verify off feedback off linesize 240
+set define on serveroutput on trimspool on verify off feedback off linesize 240
 whenever sqlerror exit sql.sqlcode rollback
 timing start refresh_data
 column date_time new_val date_time noprint
